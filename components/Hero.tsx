@@ -20,7 +20,7 @@ export default function Hero() {
     }
   }, []);
 
-  const [glitchingWord, setGlitchingWord] = useState(null);
+  const [glitchingWord, setGlitchingWord] = useState<string | null>(null);
   const [wordToGlitch, setWordToGlitch] = useState('Sound');
 
   useEffect(() => {
