@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
+import Image from 'next/image'
 import { motion, AnimatePresence } from 'framer-motion'
 import { FiChevronLeft, FiChevronRight } from 'react-icons/fi'
 import { BsFillPlayFill } from 'react-icons/bs'
@@ -410,11 +411,12 @@ export default function ProjectsPage() {
             >
               {active.imageUrl ? (
                 <>
-                  <img
+                  <Image
                     src={active.imageUrl}
                     alt={active.title}
-                    className="w-full h-auto object-contain rounded-xl"
-                    loading="lazy"
+                    fill
+                    className="object-contain rounded-xl"
+                    sizes="90vw"
                   />
                   <button
                     onClick={prevImage}

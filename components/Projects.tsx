@@ -1,6 +1,6 @@
 'use client'
 import React, { useState, useRef } from 'react'
-import { motion, AnimatePresence, useInView, useMotionValue, useTransform } from 'framer-motion'
+import { motion, AnimatePresence, useInView, useMotionValue, useTransform, Variants } from 'framer-motion'
 import Link from 'next/link'
 import { BsFillPlayFill } from 'react-icons/bs'
 
@@ -25,7 +25,7 @@ const colorWaveContainer = {
   },
 };
 
-const colorWaveLetter = {
+const colorWaveLetter: Variants = {
   inView: {
     color: ["#ffffff", "#f59e0b", "#8b5cf6", "#06b6d4", "#ffffff"],
     transition: {
