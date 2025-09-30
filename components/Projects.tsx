@@ -18,7 +18,7 @@ const duplicatedVideos = [...videos, ...videos];
 const title = "Featured Projects";
 
 const colorWaveContainer = {
-  hover: {
+  inView: {
     transition: {
       staggerChildren: 0.05,
     },
@@ -26,7 +26,7 @@ const colorWaveContainer = {
 };
 
 const colorWaveLetter = {
-  hover: {
+  inView: {
     color: ["#ffffff", "#f59e0b", "#8b5cf6", "#06b6d4", "#ffffff"],
     transition: {
       duration: 1,
@@ -79,17 +79,32 @@ export default function Projects() {
         <motion.h2
           className="text-5xl sm:text-6xl text-white font-bold tracking-tight mb-2"
           variants={colorWaveContainer}
-          whileHover="hover"
+          initial="initial"
+          animate={isInView ? "inView" : "initial"}
         >
-          {title.split("").map((letter, index) => (
-            <motion.span
-              key={index}
-              variants={colorWaveLetter}
-              className="inline-block"
-            >
-              {letter === " " ? "\u00A0" : letter}
-            </motion.span>
-          ))}
+          <motion.span className="inline-block">
+            {title.split(" ")[0].split("").map((letter, index) => (
+              <motion.span
+                key={index}
+                variants={colorWaveLetter}
+                className="inline-block"
+              >
+                {letter}
+              </motion.span>
+            ))}
+          </motion.span>
+          <span className="inline-block">&nbsp;</span>
+          <motion.span className="inline-block">
+            {title.split(" ")[1].split("").map((letter, index) => (
+              <motion.span
+                key={index}
+                variants={colorWaveLetter}
+                className="inline-block"
+              >
+                {letter}
+              </motion.span>
+            ))}
+          </motion.span>
         </motion.h2>
         <p className="text-gray-400 max-w-xl mx-auto text-balance">
           A showcase of studio sessions, official releases, and creative demos.
