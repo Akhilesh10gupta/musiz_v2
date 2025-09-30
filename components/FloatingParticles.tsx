@@ -6,7 +6,7 @@ import { Suspense } from 'react'
 import * as THREE from 'three'
 
 
-const FloatingParticles = (props: any) => {
+const FloatingParticles = () => {
   const ref = useRef<THREE.Points>(null!)
   const [sphere] = useState(() => {
     const numParticles = 5000;
@@ -36,7 +36,7 @@ const FloatingParticles = (props: any) => {
 
   return (
     <group rotation={[0, 0, Math.PI / 4]}>
-      <Points ref={ref} positions={sphere} stride={3} frustumCulled {...props}>
+      <Points ref={ref} positions={sphere} stride={3} frustumCulled>
         <PointMaterial
           transparent
           color="#f272c8"

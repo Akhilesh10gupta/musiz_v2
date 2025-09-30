@@ -1,5 +1,3 @@
-/// <reference path="../custom.d.ts" />
-
 'use client'
 import React from 'react';
 import './GlitchedWord.css';

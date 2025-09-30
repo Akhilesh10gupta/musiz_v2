@@ -5,6 +5,7 @@ import { memo, useRef, useState } from 'react'
 import Slider from 'react-slick'
 import Container from '../../components/Container'
 import { ARTISTS, Artist } from '@/lib/data/artists'
+import Image from 'next/image'
 
 import 'slick-carousel/slick/slick.css'
 import 'slick-carousel/slick/slick-theme.css'
@@ -28,7 +29,7 @@ const NavItem = memo(({ artist, active, onClick }: { artist: Artist; active: boo
     >
       <span className="w-10 h-10 sm:w-12 sm:h-12 flex items-center justify-center rounded-full overflow-hidden bg-white">
         {artist.image.startsWith('/') ? (
-          <img src={artist.image} alt={artist.name} className="w-full h-full object-cover" />
+          <Image src={artist.image} alt={artist.name} width={48} height={48} className="w-full h-full object-cover" />
         ) : (
           <span className="text-2xl sm:text-3xl">{artist.image}</span>
         )}
@@ -52,9 +53,11 @@ const GridCard = memo(({ artist }: { artist: Artist }) => {
       <div className="text-center">
         <div className="mb-2 sm:mb-3 ">
             {artist.image.startsWith('/') ? (
-              <img
+              <Image
                 src={artist.image}
                 alt={artist.name}
+                width={80}
+                height={80}
                 className="w-16 h-16 sm:w-20 sm:h-20 object-cover rounded-full mx-auto"
               />
             ) : (
@@ -136,9 +139,11 @@ export default function ArtistsPage() {
             <div>
               <div className="mb-3 sm:mb-4">
                 {current.image.startsWith('/') ? (
-                  <img
+                  <Image
                     src={current.image}
                     alt={current.name}
+                    width={112}
+                    height={112}
                     className="w-20 h-20 sm:w-28 sm:h-28 object-cover rounded-full"
                   />
                 ) : (
