@@ -13,9 +13,6 @@ const FlipText = ({ children }: { children: string }) => {
       initial="initial"
       whileHover="hovered"
       className="relative inline-block overflow-hidden whitespace-nowrap"
-      style={{
-        lineHeight: 0.85,
-      }}
     >
       {/* Normal text */}
       <div>
