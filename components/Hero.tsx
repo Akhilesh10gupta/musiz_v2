@@ -1,9 +1,65 @@
 'use client'
 
 import React, { useEffect, useState } from 'react'
+import { motion } from "framer-motion";
 import FloatingParticlesCanvas from './FloatingParticles'
-import GlitchedWord from './GlitchedWord';
-import './GlitchedWord.css';
+
+const DURATION = 0.25;
+const STAGGER = 0.025;
+
+const FlipText = ({ children }: { children: string }) => {
+  return (
+    <motion.div
+      initial="initial"
+      whileHover="hovered"
+      className="relative inline-block overflow-hidden whitespace-nowrap"
+      style={{
+        lineHeight: 0.85,
+      }}
+    >
+      {/* Normal text */}
+      <div>
+        {children.split("").map((l, i) => (
+          <motion.span
+            variants={{
+              initial: { y: 0 },
+              hovered: { y: "-100%" },
+            }}
+            transition={{
+              duration: DURATION,
+              ease: "easeInOut",
+              delay: STAGGER * i,
+            }}
+            className="inline-block"
+            key={i}
+          >
+            {l}
+          </motion.span>
+        ))}
+      </div>
+      {/* Hover text */}
+      <div className="absolute inset-0">
+        {children.split("").map((l, i) => (
+          <motion.span
+            variants={{
+              initial: { y: "100%" },
+              hovered: { y: 0 },
+            }}
+            transition={{
+              duration: DURATION,
+              ease: "easeInOut",
+              delay: STAGGER * i,
+            }}
+            className="inline-block text-amber-500 italic" // Change color and style on hover
+            key={i}
+          >
+            {l}
+          </motion.span>
+        ))}
+      </div>
+    </motion.div>
+  );
+};
 
 export default function Hero() {
   const [isMobile, setIsMobile] = useState(false);
@@ -19,20 +75,6 @@ export default function Hero() {
       mediaQuery.removeEventListener('change', handleResize);
     }
   }, []);
-
-  const [glitchingWord, setGlitchingWord] = useState<string | null>(null);
-  const [wordToGlitch, setWordToGlitch] = useState('Sound');
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setGlitchingWord(wordToGlitch);
-      setTimeout(() => {
-        setGlitchingWord(null);
-        setWordToGlitch(current => (current === 'Sound' ? 'Emotion' : 'Sound'));
-      }, 1000);
-    }, 5000);
-    return () => clearInterval(interval);
-  }, [wordToGlitch]);
 
   return (
     <section
@@ -61,7 +103,7 @@ export default function Hero() {
             'Crafting Sound, Shaping Emotion.'
           ) : (
             <>
-              Crafting <GlitchedWord word="Sound" isGlitched={glitchingWord === 'Sound'} />, Shaping <GlitchedWord word="Emotion" isGlitched={glitchingWord === 'Emotion'} />.
+              <FlipText>Crafting</FlipText> <FlipText>Sound</FlipText>, <FlipText>Shaping</FlipText> <FlipText>Emotion</FlipText>.
             </>
           )}
         </h1>
