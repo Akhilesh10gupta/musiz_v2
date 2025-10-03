@@ -102,7 +102,7 @@ const Footer = () => {
             <ul className="space-y-2 text-sm">
               <li><a href="mailto:studiosirmusiz@gmail.com" className="hover:text-white transition-colors">studiosirmusiz@gmail.com</a></li>
               <li><a href="tel:+918467898698" className="hover:text-white transition-colors">+91 84678 98698</a></li>
-              <li><span>123 Music Street, Mumbai, India</span></li>
+              <li><span>Block A, Kohli Vihar, Sector 49 Noida, Uttar Pradesh India</span></li>
             </ul>
           </motion.div>
         </div>
