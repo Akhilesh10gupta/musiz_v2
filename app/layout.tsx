@@ -1,4 +1,7 @@
-import type { Metadata } from "next";
+'use client';
+
+import { useState } from 'react';
+// import type { Metadata } from "next";
 import { Geist, Geist_Mono, Poppins, Dancing_Script } from "next/font/google";
 import "./globals.css";
 import "slick-carousel/slick/slick.css";
@@ -31,55 +34,57 @@ const dancingScript = Dancing_Script({
 });
 
 // This metadata will be applied to all pages
-export const metadata: Metadata = {
-  title: {
-    default: 'SiR Musiz Studios - Creative Audio & Visual Production',
-    template: '%s | SiR Musiz Studios', // For nested pages, e.g., "About Us | SiR Musiz Studios"
-  },
-  description: 'A creative haven where sonic innovation meets soulful storytelling. We turn raw ideas into immersive audio-visual experiences.',
-  keywords: ['SiR Musiz Studios', 'Music Production', 'Video Editing', 'Mixing', 'Audio Engineering', 'Graphics Design'],
-  openGraph: {
-    title: 'SiR Musiz Studios- Creative Audio & Visual Production',
-    description: 'A creative haven for audio and visual arts.',
-    url: 'https://sirmusizstudios.com', // Replace with your actual domain
-    siteName: 'SiR Musiz Studios',
-    images: [
-      {
-        url: 'https://sirmusizstudios.com/logo.png', // Replace with a link to your OG image
-        width: 1200,
-        height: 630,
-      },
-    ],
-    locale: 'en_US',
-    type: 'website',
-  },
-  twitter: {
-    card: 'summary_large_image',
-    title: 'SiR Musiz Studios - Creative Audio & Visual Production',
-    description: 'A creative haven for audio and visual arts.',
-    // creator: '@your_twitter_handle', // Replace with your Twitter handle
-    images: ['https://sirmusizstudios.com/logo.png'], // Replace with a link to your OG image
-  },
-  icons: {
-    icon: '/logo_2.ico',
-    apple: '/logo_2.png',
-  },
-}
+// export const metadata: Metadata = {
+//   title: {
+//     default: 'SiR Musiz Studios - Creative Audio & Visual Production',
+//     template: '%s | SiR Musiz Studios', // For nested pages, e.g., "About Us | SiR Musiz Studios"
+//   },
+//   description: 'A creative haven where sonic innovation meets soulful storytelling. We turn raw ideas into immersive audio-visual experiences.',
+//   keywords: ['SiR Musiz Studios', 'Music Production', 'Video Editing', 'Mixing', 'Audio Engineering', 'Graphics Design'],
+//   openGraph: {
+//     title: 'SiR Musiz Studios- Creative Audio & Visual Production',
+//     description: 'A creative haven for audio and visual arts.',
+//     url: 'https://sirmusizstudios.com', // Replace with your actual domain
+//     siteName: 'SiR Musiz Studios',
+//     images: [
+//       {
+//         url: 'https://sirmusizstudios.com/logo.png', // Replace with a link to your OG image
+//         width: 1200,
+//         height: 630,
+//       },
+//     ],
+//     locale: 'en_US',
+//     type: 'website',
+//   },
+//   twitter: {
+//     card: 'summary_large_image',
+//     title: 'SiR Musiz Studios - Creative Audio & Visual Production',
+//     description: 'A creative haven for audio and visual arts.',
+//     // creator: '@your_twitter_handle', // Replace with your Twitter handle
+//     images: ['https://sirmusizstudios.com/logo.png'], // Replace with a link to your OG image
+//   },
+//   icons: {
+//     icon: '/logo_2.ico',
+//     apple: '/logo_2.png',
+//   },
+// }
 
 export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const [menuOpen, setMenuOpen] = useState(false);
+
   const jsonLd = {
     '@context': 'https://schema.org',
     '@type': 'MusicGroup', // Or 'Organization'
     name: 'SiR Musiz Studios',
-    url: 'https://sirmusizstudios.com', // Replace with your actual domain
-    logo: 'https://sirmusizstudios.com/logo.png', // Replace with your logo URL
+    url: 'https://sirmusizstudios.com',
+    logo: 'https://sirmusizstudios.com/logo.png',
     contactPoint: {
       '@type': 'ContactPoint',
-      telephone: '+91 84678 98698', // Replace with your phone number
+      telephone: '+91 84678 98698',
       contactType: 'customer service',
     },
   };
@@ -96,9 +101,11 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} ${poppins.variable} ${dancingScript.variable} antialiased`}
       >
         <MouseGradient />
-        <Header />
-        {children}
-        <Footer />
+        <Header menuOpen={menuOpen} setMenuOpen={setMenuOpen} />
+        <main className={`transition-filter duration-300 ${menuOpen ? 'blur-sm' : ''}`}>
+          {children}
+          <Footer />
+        </main>
       </body>
     </html>
   );

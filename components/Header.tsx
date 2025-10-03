@@ -8,9 +8,8 @@ import Container from './Container'
 import { motion, AnimatePresence, type Variants } from 'framer-motion'
 import { usePathname } from 'next/navigation'
 
-const Header: React.FC = () => {
+const Header: React.FC<{ menuOpen: boolean; setMenuOpen: React.Dispatch<React.SetStateAction<boolean>> }> = ({ menuOpen, setMenuOpen }) => {
   /* ------------ state ------------ */
-  const [menuOpen, setMenuOpen] = useState(false)
   const [mobileWorkOpen, setMobileWorkOpen] = useState(false)
   const [workHover, setWorkHover] = useState(false)
   const [scrolled, setScrolled] = useState(false)
@@ -112,32 +111,38 @@ const Header: React.FC = () => {
               <span className="block max-w-0 group-hover:max-w-full transition-all duration-500 h-0.5 bg-amber-500"></span>
             </button>
 
-            {workHover && (
-              <div
-                className="absolute left-0 top-full z-50 mt-2 w-48 rounded-md bg-black py-2 text-white shadow-lg"
-                onMouseEnter={clearHoverTimeout}
-                onMouseLeave={startHoverTimeout}
-              >
-                <Link
-                  href="/work/music"
-                  className="block px-4 py-2 hover:bg-white hover:text-black"
+            <AnimatePresence>
+              {workHover && (
+                <motion.div
+                  initial={{ opacity: 0, y: -10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -10 }}
+                  transition={{ duration: 0.2, ease: 'easeInOut' }}
+                  className="absolute left-0 top-full z-50 mt-2 w-48 rounded-md bg-black py-2 text-white shadow-lg"
+                  onMouseEnter={clearHoverTimeout}
+                  onMouseLeave={startHoverTimeout}
                 >
-                  Music Projects
-                </Link>
-                <Link
-                  href="/work/film"
-                  className="block px-4 py-2 hover:bg-white hover:text-black"
-                >
-                  Film Scoring
-                </Link>
-                <Link
-                  href="/work/commercial"
-                  className="block px-4 py-2 hover:bg-white hover:text-black"
-                >
-                  Commercials
-                </Link>
-              </div>
-            )}
+                  <Link
+                    href="/work/music"
+                    className="block px-4 py-2 hover:bg-white hover:text-black"
+                  >
+                    Music Projects
+                  </Link>
+                  <Link
+                    href="/work/film"
+                    className="block px-4 py-2 hover:bg-white hover:text-black"
+                  >
+                    Film Scoring
+                  </Link>
+                  <Link
+                    href="/work/commercial"
+                    className="block px-4 py-2 hover:bg-white hover:text-black"
+                  >
+                    Commercials
+                  </Link>
+                </motion.div>
+              )}
+            </AnimatePresence>
           </div>
 
           <Link href="/artist" className={`group font-semibold ${
@@ -190,7 +195,7 @@ const Header: React.FC = () => {
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               transition={{ duration: 0.3, ease: 'easeInOut' }}
-              className="fixed inset-0 z-40 bg-black/50 backdrop-blur-sm"
+              className="fixed inset-0 z-40 bg-black/50"
               onClick={toggleMenu}
             />
             <motion.div
@@ -201,7 +206,10 @@ const Header: React.FC = () => {
               exit="exit"
               className="absolute top-[72px] left-0 w-full px-4 pt-4 sm:hidden z-50"
             >
-              <div className="flex flex-col space-y-5 rounded-lg bg-gray-900/95 p-6 text-sm uppercase font-light tracking-wide text-gray-300 shadow-xl">
+              <div
+                className="flex flex-col space-y-5 rounded-lg bg-gray-900/95 p-6 text-sm uppercase font-light tracking-wide text-gray-300 shadow-xl"
+                onClick={e => e.stopPropagation()}
+              >
                 <motion.div variants={menuItemVariants} whileTap={{ scale: 0.95 }}>
                   <Link
                     href="/"
@@ -225,7 +233,7 @@ const Header: React.FC = () => {
                 {/* Mobile Work submenu */}
                 <motion.div variants={menuItemVariants} className="flex flex-col">
                   <button
-                    onClick={toggleMobileWork}
+                    onClick={(e) => { e.stopPropagation(); toggleMobileWork(); }}
                     className="flex items-center justify-between text-left focus:outline-none hover:text-white"
                   >
                     <span>WORK</span>
@@ -243,7 +251,7 @@ const Header: React.FC = () => {
                         exit={{ opacity: 0, height: 0 }}
                         className="mt-2 flex flex-col space-y-2 pl-4 text-sm"
                       >
-                        <motion.div variants={menuItemVariants} whileTap={{ scale: 0.95 }}>
+                        <motion.div>
                           <Link
                             href="/work/music"
                             onClick={() => setMenuOpen(false)}
@@ -252,7 +260,7 @@ const Header: React.FC = () => {
                             Music Projects
                           </Link>
                         </motion.div>
-                        <motion.div variants={menuItemVariants} whileTap={{ scale: 0.95 }}>
+                        <motion.div>
                           <Link
                             href="/work/film"
                             onClick={() => setMenuOpen(false)}
@@ -261,7 +269,7 @@ const Header: React.FC = () => {
                             Film Scoring
                           </Link>
                         </motion.div>
-                        <motion.div variants={menuItemVariants} whileTap={{ scale: 0.95 }}>
+                        <motion.div>
                           <Link
                             href="/work/commercial"
                             onClick={() => setMenuOpen(false)}
