@@ -20,7 +20,7 @@ const formVariants: Variants = {
     x: 0,
     transition: {
       duration: 0.3,
-      ease: 'easeInOut',
+      ease: [0.42, 0, 0.58, 1],
     },
   },
   exit: (direction: number) => ({
@@ -28,7 +28,7 @@ const formVariants: Variants = {
     x: direction < 0 ? 100 : -100,
     transition: {
       duration: 0.3,
-      ease: 'easeInOut',
+      ease: [0.42, 0, 0.58, 1],
     },
   }),
 }
