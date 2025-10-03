@@ -40,31 +40,65 @@ export function ContactForm() {
   const [name, setName] = useState('')
   const [email, setEmail] = useState('')
   const [message, setMessage] = useState('')
+  const [errors, setErrors] = useState<{ name?: string; email?: string; message?: string }>({})
 
   const handleSwitch = (newForm: FormType) => {
     if (newForm === formType) return
     setDirection(newForm === 'email' ? -1 : 1)
     setFormType(newForm)
+    setErrors({})
+  }
+
+  const validate = () => {
+    const newErrors: { name?: string; email?: string; message?: string } = {}
+    if (!name.trim()) {
+        newErrors.name = "Name is required."
+    }
+    if (!message.trim()) {
+        newErrors.message = "Message is required."
+    }
+    if (formType === 'email') {
+        if (!email.trim()) {
+            newErrors.email = "Email is required."
+        } else if (!/\S+@\S+\.\S+/.test(email)) {
+            newErrors.email = "Email is invalid."
+        }
+    }
+    return newErrors
   }
 
   const handleWhatsAppSubmit = (e: React.FormEvent) => {
     e.preventDefault()
+    const newErrors = validate()
+    if (Object.keys(newErrors).length > 0) {
+        setErrors(newErrors)
+        return
+    }
     const whatsappMessage = `Hello, my name is ${name}. ${message}`
     const whatsappUrl = `https://wa.me/918467898698?text=${encodeURIComponent(
       whatsappMessage
     )}`
+    console.log('Generated WhatsApp URL:', whatsappUrl);
     window.open(whatsappUrl, '_blank')
     setName('')
     setMessage('')
+    setErrors({})
   }
 
   const handleEmailSubmit = (e: React.FormEvent) => {
     e.preventDefault()
+    const newErrors = validate()
+    if (Object.keys(newErrors).length > 0) {
+        setErrors(newErrors)
+        return
+    }
     const mailtoUrl = `mailto:studiosirmusiz@gmail.com?subject=Message from ${name}&body=${encodeURIComponent(message)}`
+    console.log('Generated mailto URL:', mailtoUrl);
     window.location.href = mailtoUrl
     setName('')
     setEmail('')
     setMessage('')
+    setErrors({})
   }
 
   return (
@@ -86,7 +120,7 @@ export function ContactForm() {
         </Button>
       </div>
 
-      <div className="relative h-[320px]">
+      <div className="relative h-[380px]">
         <AnimatePresence initial={false} custom={direction}>
           {formType === 'email' && (
             <motion.form
@@ -100,23 +134,28 @@ export function ContactForm() {
               className="absolute w-full flex flex-col gap-4"
             >
               <h3 className="text-2xl font-bold text-white mb-2 text-center">Contact via Email</h3>
-              <div className="grid grid-cols-1 gap-4">
+              <div className="grid grid-cols-1 gap-2">
                 <div>
                   <Label htmlFor="name-email" className="text-gray-300">Your Name</Label>
                   <Input id="name-email" type="text" placeholder="John Doe" value={name} onChange={(e) => setName(e.target.value)} className="bg-gray-800/80 border-gray-700 text-white" />
+                  {errors.name && <p className="text-red-500 text-xs mt-1">{errors.name}</p>}
                 </div>
                 <div>
                   <Label htmlFor="email" className="text-gray-300">Your Email</Label>
                   <Input id="email" type="email" placeholder="john.doe@example.com" value={email} onChange={(e) => setEmail(e.target.value)} className="bg-gray-800/80 border-gray-700 text-white" />
+                  {errors.email && <p className="text-red-500 text-xs mt-1">{errors.email}</p>}
                 </div>
                 <div>
                   <Label htmlFor="message-email" className="text-gray-300">Message</Label>
                   <Textarea id="message-email" placeholder="Your message..." value={message} onChange={(e) => setMessage(e.target.value)} className="bg-gray-800/80 border-gray-700 text-white" />
+                  {errors.message && <p className="text-red-500 text-xs mt-1">{errors.message}</p>}
                 </div>
               </div>
-              <Button type="submit" className="w-full bg-blue-500 hover:bg-blue-600 text-white font-semibold">
-                Send Email
-              </Button>
+              <motion.div className="flex justify-center mt-2" whileTap={{ scale: 0.95 }}>
+                <Button type="submit" className="px-8 bg-blue-500 hover:bg-blue-600 text-white font-semibold">
+                  Send Email
+                </Button>
+              </motion.div>
             </motion.form>
           )}
 
@@ -132,19 +171,23 @@ export function ContactForm() {
               className="absolute w-full flex flex-col gap-4"
             >
               <h3 className="text-2xl font-bold text-white mb-2 text-center">Send a WhatsApp Message</h3>
-               <div className="grid grid-cols-1 gap-4">
+               <div className="grid grid-cols-1 gap-2">
                 <div>
                   <Label htmlFor="name-whatsapp" className="text-gray-300">Your Name</Label>
                   <Input id="name-whatsapp" type="text" placeholder="John Doe" value={name} onChange={(e) => setName(e.target.value)} className="bg-gray-800/80 border-gray-700 text-white" />
+                  {errors.name && <p className="text-red-500 text-xs mt-1">{errors.name}</p>}
                 </div>
                 <div>
                   <Label htmlFor="message-whatsapp" className="text-gray-300">Message</Label>
                   <Textarea id="message-whatsapp" placeholder="Your message..." value={message} onChange={(e) => setMessage(e.target.value)} className="bg-gray-800/80 border-gray-700 text-white" />
+                  {errors.message && <p className="text-red-500 text-xs mt-1">{errors.message}</p>}
                 </div>
               </div>
-              <Button type="submit" className="w-full bg-green-500 hover:bg-green-600 text-white font-semibold">
-                Send on WhatsApp
-              </Button>
+              <motion.div className="flex justify-center mt-2" whileTap={{ scale: 0.95 }}>
+                <Button type="submit" className="px-8 bg-green-500 hover:bg-green-600 text-white font-semibold">
+                  Send on WhatsApp
+                </Button>
+              </motion.div>
             </motion.form>
           )}
         </AnimatePresence>
