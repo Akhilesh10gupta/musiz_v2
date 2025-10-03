@@ -1,5 +1,5 @@
 'use client'
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { AnimatePresence, motion, Variants } from 'framer-motion'
 import { Button } from './ui/button'
 import { Input } from './ui/input'
@@ -43,12 +43,18 @@ export function ContactForm() {
   const [errors, setErrors] = useState<{ name?: string; email?: string; message?: string }>({})
   const [submissionStatus, setSubmissionStatus] = useState<'idle' | 'sending' | 'success' | 'error'>('idle')
 
+  useEffect(() => {
+    setName('')
+    setEmail('')
+    setMessage('')
+    setErrors({})
+    setSubmissionStatus('idle')
+  }, [formType])
+
   const handleSwitch = (newForm: FormType) => {
     if (newForm === formType) return
     setDirection(newForm === 'email' ? -1 : 1)
     setFormType(newForm)
-    setErrors({})
-    setSubmissionStatus('idle')
   }
 
   const validate = () => {
@@ -76,15 +82,23 @@ export function ContactForm() {
         setErrors(newErrors)
         return
     }
+
+    setSubmissionStatus('sending')
     const whatsappMessage = `Hello, my name is ${name}. ${message}`
     const whatsappUrl = `https://wa.me/918467898698?text=${encodeURIComponent(
       whatsappMessage
     )}`
-    console.log('Generated WhatsApp URL:', whatsappUrl);
-    window.open(whatsappUrl, '_blank')
-    setName('')
-    setMessage('')
-    setErrors({})
+
+    const newWindow = window.open(whatsappUrl, '_blank')
+
+    if (newWindow) {
+        setSubmissionStatus('success')
+        setName('')
+        setMessage('')
+        setErrors({})
+    } else {
+        setSubmissionStatus('error')
+    }
   }
 
   const handleEmailSubmit = async (e: React.FormEvent) => {
@@ -144,7 +158,7 @@ export function ContactForm() {
         </Button>
       </div>
 
-      <div className="relative h-[380px]">
+      <div className="relative h-[450px]">
         <AnimatePresence initial={false} custom={direction}>
           {formType === 'email' && (
             <motion.form
@@ -204,20 +218,26 @@ export function ContactForm() {
                <div className="grid grid-cols-1 gap-2">
                 <div>
                   <Label htmlFor="name-whatsapp" className="text-gray-300">Your Name</Label>
-                  <Input id="name-whatsapp" type="text" placeholder="John Doe" value={name} onChange={(e) => setName(e.target.value)} className="bg-gray-800/80 border-gray-700 text-white" />
+                  <Input id="name-whatsapp" type="text" placeholder="John Doe" value={name} onChange={(e) => setName(e.target.value)} className="bg-gray-800/80 border-gray-700 text-white" disabled={submissionStatus === 'sending'} />
                   {errors.name && <p className="text-red-500 text-xs mt-1">{errors.name}</p>}
                 </div>
                 <div>
                   <Label htmlFor="message-whatsapp" className="text-gray-300">Message</Label>
-                  <Textarea id="message-whatsapp" placeholder="Your message..." value={message} onChange={(e) => setMessage(e.target.value)} className="bg-gray-800/80 border-gray-700 text-white" />
+                  <Textarea id="message-whatsapp" placeholder="Your message..." value={message} onChange={(e) => setMessage(e.target.value)} className="bg-gray-800/80 border-gray-700 text-white" disabled={submissionStatus === 'sending'} />
                   {errors.message && <p className="text-red-500 text-xs mt-1">{errors.message}</p>}
                 </div>
               </div>
               <motion.div className="flex justify-center mt-2" whileTap={{ scale: 0.95 }}>
-                <Button type="submit" className="px-8 bg-green-500 hover:bg-green-600 text-white font-semibold">
-                  Send on WhatsApp
+                <Button type="submit" className="px-8 bg-green-500 hover:bg-green-600 text-white font-semibold" disabled={submissionStatus === 'sending'}>
+                  {submissionStatus === 'sending' ? 'Sending...' : 'Send on WhatsApp'}
                 </Button>
               </motion.div>
+              {submissionStatus === 'success' && (
+                <p className="text-green-500 text-center mt-2">WhatsApp opened successfully!</p>
+              )}
+              {submissionStatus === 'error' && (
+                <p className="text-red-500 text-center mt-2">Failed to open WhatsApp. Please try again or contact us directly at +91 84678 98698.</p>
+              )}
             </motion.form>
           )}
         </AnimatePresence>
