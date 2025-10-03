@@ -70,7 +70,7 @@ export default function StorePage() {
     visible: {
       opacity: 1,
       x: 0,
-      transition: { type: 'tween', ease: 'easeInOut', duration: 0.5 },
+      transition: { type: 'tween', ease: 'linear', duration: 0.5 },
     },
   };
 
@@ -79,7 +79,7 @@ export default function StorePage() {
     visible: {
       opacity: 1,
       x: 0,
-      transition: { type: 'tween', ease: 'easeInOut', duration: 0.5 },
+      transition: { type: 'tween', ease: 'linear', duration: 0.5 },
     },
   };
 
