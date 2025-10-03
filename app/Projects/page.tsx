@@ -127,7 +127,7 @@ const projects: Project[] = [
     'edu3.jpg',
   ].map((url, i) => ({
     id: 50 + i,
-    title: 'Poster Image',
+    title: url.replace(/\.(jpg|png)$/, '').replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase()),
     creator: 'Art Dept.',
     category: 'Poster & Social Media Post',
     description: 'A poster image.',

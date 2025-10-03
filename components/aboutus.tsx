@@ -1,11 +1,4 @@
 'use client'
-import type { Metadata } from 'next'
-
-export const metadata: Metadata = {
-  title: 'About Us - SiR Musiz Studios',
-  description: 'Learn more about SiR Musiz Studios, our mission, and the creative minds behind our audio-visual productions.',
-}
-
 import React, { useState, useRef } from 'react'
 import { motion, useScroll, useTransform } from 'framer-motion'
 import type { Variants } from 'framer-motion'
