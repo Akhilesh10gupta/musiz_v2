@@ -1,6 +1,6 @@
 'use client'
 import React, { useState } from 'react'
-import { AnimatePresence, motion } from 'framer-motion'
+import { AnimatePresence, motion, Variants } from 'framer-motion'
 import { Button } from './ui/button'
 import { Input } from './ui/input'
 import { Label } from './ui/label'
@@ -10,7 +10,7 @@ import { MdEmail } from 'react-icons/md'
 
 type FormType = 'email' | 'whatsapp'
 
-const formVariants = {
+const formVariants: Variants = {
   hidden: (direction: number) => ({
     opacity: 0,
     x: direction > 0 ? 100 : -100,
