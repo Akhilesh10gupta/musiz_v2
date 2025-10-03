@@ -2,7 +2,8 @@
 
 import React, { useEffect, useState } from 'react'
 import { motion } from "framer-motion";
-import FloatingParticlesCanvas from './FloatingParticles'
+import FloatingParticlesCanvas from './FloatingParticles';
+import AnimatedButton from './ui/AnimatedButton';
 
 const DURATION = 0.25;
 const STAGGER = 0.025;
@@ -109,13 +110,11 @@ export default function Hero() {
         >
           We turn raw ideas into immersive audio-visual experiences.
         </p>
-        <a
-          href="/contact"
-          className={`inline-block mt-8 sm:mt-12 px-10 py-4 rounded-full bg-amber-500
-                     text-white text-lg sm:text-xl font-bold shadow-lg hover:shadow-xl transition-shadow animate-fade-in-up animation-delay-600 ${isMobile ? 'animate-pulse-slow' : ''}`}
-        >
-          Get a Quote
-        </a>
+        <div className={`mt-8 sm:mt-12 animate-fade-in-up animation-delay-600`}>
+          <AnimatedButton href="/contact">
+            Get a Quote
+          </AnimatedButton>
+        </div>
       </div>
     </section>
   );
