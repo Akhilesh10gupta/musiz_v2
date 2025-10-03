@@ -41,12 +41,14 @@ export function ContactForm() {
   const [email, setEmail] = useState('')
   const [message, setMessage] = useState('')
   const [errors, setErrors] = useState<{ name?: string; email?: string; message?: string }>({})
+  const [submissionStatus, setSubmissionStatus] = useState<'idle' | 'sending' | 'success' | 'error'>('idle')
 
   const handleSwitch = (newForm: FormType) => {
     if (newForm === formType) return
     setDirection(newForm === 'email' ? -1 : 1)
     setFormType(newForm)
     setErrors({})
+    setSubmissionStatus('idle')
   }
 
   const validate = () => {
@@ -85,21 +87,43 @@ export function ContactForm() {
     setErrors({})
   }
 
-  const handleEmailSubmit = (e: React.FormEvent) => {
+  const handleEmailSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
+    setSubmissionStatus('sending')
     const newErrors = validate()
     if (Object.keys(newErrors).length > 0) {
         setErrors(newErrors)
+        setSubmissionStatus('idle')
         return
     }
-    const mailtoUrl = `mailto:studiosirmusiz@gmail.com?subject=Message from ${name}&body=${encodeURIComponent(message)}`
-    console.log('Generated mailto URL:', mailtoUrl);
-    window.location.href = mailtoUrl
-    setName('')
-    setEmail('')
-    setMessage('')
-    setErrors({})
+
+    try {
+      const response = await fetch('/api/send-email', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ name, email, message }),
+      })
+
+      if (response.ok) {
+        setSubmissionStatus('success')
+        setName('')
+        setEmail('')
+        setMessage('')
+        setErrors({})
+      } else {
+        const errorData = await response.json()
+        setSubmissionStatus('error')
+        console.error('Email send failed:', errorData.error)
+      }
+    } catch (error) {
+      setSubmissionStatus('error')
+      console.error('Error sending email:', error)
+    }
   }
+
+  const isSubmitting = submissionStatus === 'sending'
 
   return (
     <div className="w-full">
@@ -137,25 +161,31 @@ export function ContactForm() {
               <div className="grid grid-cols-1 gap-2">
                 <div>
                   <Label htmlFor="name-email" className="text-gray-300">Your Name</Label>
-                  <Input id="name-email" type="text" placeholder="John Doe" value={name} onChange={(e) => setName(e.target.value)} className="bg-gray-800/80 border-gray-700 text-white" />
+                  <Input id="name-email" type="text" placeholder="John Doe" value={name} onChange={(e) => setName(e.target.value)} className="bg-gray-800/80 border-gray-700 text-white" disabled={isSubmitting} />
                   {errors.name && <p className="text-red-500 text-xs mt-1">{errors.name}</p>}
                 </div>
                 <div>
                   <Label htmlFor="email" className="text-gray-300">Your Email</Label>
-                  <Input id="email" type="email" placeholder="john.doe@example.com" value={email} onChange={(e) => setEmail(e.target.value)} className="bg-gray-800/80 border-gray-700 text-white" />
+                  <Input id="email" type="email" placeholder="john.doe@example.com" value={email} onChange={(e) => setEmail(e.target.value)} className="bg-gray-800/80 border-gray-700 text-white" disabled={isSubmitting} />
                   {errors.email && <p className="text-red-500 text-xs mt-1">{errors.email}</p>}
                 </div>
                 <div>
                   <Label htmlFor="message-email" className="text-gray-300">Message</Label>
-                  <Textarea id="message-email" placeholder="Your message..." value={message} onChange={(e) => setMessage(e.target.value)} className="bg-gray-800/80 border-gray-700 text-white" />
+                  <Textarea id="message-email" placeholder="Your message..." value={message} onChange={(e) => setMessage(e.target.value)} className="bg-gray-800/80 border-gray-700 text-white" disabled={isSubmitting} />
                   {errors.message && <p className="text-red-500 text-xs mt-1">{errors.message}</p>}
                 </div>
               </div>
               <motion.div className="flex justify-center mt-2" whileTap={{ scale: 0.95 }}>
-                <Button type="submit" className="px-8 bg-blue-500 hover:bg-blue-600 text-white font-semibold">
-                  Send Email
+                <Button type="submit" className="px-8 bg-blue-500 hover:bg-blue-600 text-white font-semibold" disabled={isSubmitting}>
+                  {isSubmitting ? 'Sending...' : 'Send Email'}
                 </Button>
               </motion.div>
+              {submissionStatus === 'success' && (
+                <p className="text-green-500 text-center mt-2">Email sent successfully!</p>
+              )}
+              {submissionStatus === 'error' && (
+                <p className="text-red-500 text-center mt-2">Failed to send email. Please try again.</p>
+              )}
             </motion.form>
           )}
 
