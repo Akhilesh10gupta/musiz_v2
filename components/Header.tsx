@@ -10,29 +10,12 @@ import { usePathname } from 'next/navigation'
 
 const Header: React.FC<{ menuOpen: boolean; setMenuOpen: React.Dispatch<React.SetStateAction<boolean>> }> = ({ menuOpen, setMenuOpen }) => {
   /* ------------ state ------------ */
-  const [mobileWorkOpen, setMobileWorkOpen] = useState(false)
-  const [workHover, setWorkHover] = useState(false)
-  const [scrolled, setScrolled] = useState(false)
 
-  /* Browser timeout ID is a number, so type the ref that way */
-  const hoverTimeoutRef = useRef<number | null>(null)
+  const [scrolled, setScrolled] = useState(false)
   const pathname = usePathname()
 
   /* ------------ helpers ------------ */
   const toggleMenu = () => setMenuOpen(prev => !prev)
-  const toggleMobileWork = () => setMobileWorkOpen(prev => !prev)
-
-  const clearHoverTimeout = () => {
-    if (hoverTimeoutRef.current !== null) {
-      window.clearTimeout(hoverTimeoutRef.current)
-      hoverTimeoutRef.current = null
-    }
-  }
-
-  const startHoverTimeout = () => {
-    hoverTimeoutRef.current = window.setTimeout(() => setWorkHover(false), 200)
-  }
-
   useEffect(() => {
     const handleScroll = () => {
       setScrolled(window.scrollY > 50)
@@ -94,58 +77,7 @@ const Header: React.FC<{ menuOpen: boolean; setMenuOpen: React.Dispatch<React.Se
             }`}>
             Projects
             <span className="block max-w-0 group-hover:max-w-full transition-all duration-500 h-0.5 bg-amber-500"></span>
-          </Link>
-
-          {/* WORK menu with hover dropdown */}
-          <div
-            className="relative"
-            onMouseEnter={() => {
-              clearHoverTimeout()
-              setWorkHover(true)
-            }}
-            onMouseLeave={startHoverTimeout}
-          >
-            <button className="group flex cursor-pointer items-center focus:outline-none">
-              <span className="font-semibold">WORK</span>
-              <ChevronDown className="ml-1 h-4 w-4" />
-              <span className="block max-w-0 group-hover:max-w-full transition-all duration-500 h-0.5 bg-amber-500"></span>
-            </button>
-
-            <AnimatePresence>
-              {workHover && (
-                <motion.div
-                  initial={{ opacity: 0, y: -10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -10 }}
-                  transition={{ duration: 0.2, ease: 'easeInOut' }}
-                  className="absolute left-0 top-full z-50 mt-2 w-48 rounded-md bg-black py-2 text-white shadow-lg"
-                  onMouseEnter={clearHoverTimeout}
-                  onMouseLeave={startHoverTimeout}
-                >
-                  <Link
-                    href="/work/music"
-                    className="block px-4 py-2 hover:bg-white hover:text-black"
-                  >
-                    Music Projects
-                  </Link>
-                  <Link
-                    href="/work/film"
-                    className="block px-4 py-2 hover:bg-white hover:text-black"
-                  >
-                    Film Scoring
-                  </Link>
-                  <Link
-                    href="/work/commercial"
-                    className="block px-4 py-2 hover:bg-white hover:text-black"
-                  >
-                    Commercials
-                  </Link>
-                </motion.div>
-              )}
-            </AnimatePresence>
-          </div>
-
-          <Link href="/artist" className={`group font-semibold ${
+          </Link>          <Link href="/artist" className={`group font-semibold ${
               pathname === '/artist' ? 'text-amber-500' : ''
             }`}>
             Artist
@@ -155,10 +87,10 @@ const Header: React.FC<{ menuOpen: boolean; setMenuOpen: React.Dispatch<React.Se
             Services
             <span className="block max-w-0 group-hover:max-w-full transition-all duration-500 h-0.5 bg-amber-500"></span>
           </Link>
-          <Link href="/ekart" className={`group font-semibold ${
-              pathname === '/ekart' ? 'text-amber-500' : ''
+          <Link href="/store" className={`group font-semibold ${
+              pathname === '/store' ? 'text-amber-500' : ''
             }`}>
-            Ekart
+            Store
             <span className="block max-w-0 group-hover:max-w-full transition-all duration-500 h-0.5 bg-amber-500"></span>
           </Link>
           <Link href="/#about" className="group font-semibold">
@@ -230,58 +162,7 @@ const Header: React.FC<{ menuOpen: boolean; setMenuOpen: React.Dispatch<React.Se
                     Projects
                   </Link>
                 </motion.div>
-                {/* Mobile Work submenu */}
-                <motion.div variants={menuItemVariants} className="flex flex-col">
-                  <button
-                    onClick={(e) => { e.stopPropagation(); toggleMobileWork(); }}
-                    className="flex items-center justify-between text-left focus:outline-none hover:text-white"
-                  >
-                    <span>WORK</span>
-                    <ChevronDown
-                      className={`h-4 w-4 transition-transform ${
-                        mobileWorkOpen ? 'rotate-180' : 'rotate-0'
-                      }`}
-                    />
-                  </button>
-                  <AnimatePresence>
-                    {mobileWorkOpen && (
-                      <motion.div
-                        initial={{ opacity: 0, height: 0 }}
-                        animate={{ opacity: 1, height: 'auto' }}
-                        exit={{ opacity: 0, height: 0 }}
-                        className="mt-2 flex flex-col space-y-2 pl-4 text-sm"
-                      >
-                        <motion.div>
-                          <Link
-                            href="/work/music"
-                            onClick={() => setMenuOpen(false)}
-                            className="block hover:text-white"
-                          >
-                            Music Projects
-                          </Link>
-                        </motion.div>
-                        <motion.div>
-                          <Link
-                            href="/work/film"
-                            onClick={() => setMenuOpen(false)}
-                            className="block hover:text-white"
-                          >
-                            Film Scoring
-                          </Link>
-                        </motion.div>
-                        <motion.div>
-                          <Link
-                            href="/work/commercial"
-                            onClick={() => setMenuOpen(false)}
-                            className="block hover:text-white"
-                          >
-                            Commercials
-                          </Link>
-                        </motion.div>
-                      </motion.div>
-                    )}
-                  </AnimatePresence>
-                </motion.div>
+
                 <motion.div variants={menuItemVariants} whileTap={{ scale: 0.95 }}>
                   <Link
                     href="/artist"
@@ -303,12 +184,12 @@ const Header: React.FC<{ menuOpen: boolean; setMenuOpen: React.Dispatch<React.Se
                 </motion.div>
                 <motion.div variants={menuItemVariants} whileTap={{ scale: 0.95 }}>
                   <Link
-                    href="/ekart"
+                    href="/store"
                     onClick={() => setMenuOpen(false)}
                     className={`block hover:text-white ${
-                      pathname === '/ekart' ? 'text-amber-500' : ''
+                      pathname === '/store' ? 'text-amber-500' : ''
                     }`}>
-                    Ekart
+                    Store
                   </Link>
                 </motion.div>
                 <motion.div variants={menuItemVariants} whileTap={{ scale: 0.95 }}>

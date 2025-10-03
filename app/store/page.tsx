@@ -26,7 +26,7 @@ const categories = [
 
 const PAGE_SIZE = 6;
 
-export default function EkartPage() {
+export default function StorePage() {
   const [cart, setCart] = useState<number[]>([]);
   const [category, setCategory] = useState('All');
   const [page, setPage] = useState(1);
@@ -62,9 +62,9 @@ export default function EkartPage() {
   return (
     <div className="min-h-screen bg-gray-100 dark:bg-gray-900 px-0 pb-20">
       {/* Hero Banner */}
-      <div className="relative bg-blue-500 dark:ekart-hero-pattern py-16 mb-10 text-white text-center shadow-lg">
-        <h1 className="text-5xl font-extrabold mb-2 mt-4 tracking-tight drop-shadow-lg text-white">Discover & Buy Music Samples</h1>
-        <p className="text-lg max-w-2xl mx-auto text-blue-100 dark:text-blue-200 opacity-90">Browse, listen, and purchase high-quality music samples for your next project. Filter by category, preview tracks, and build your custom cart!</p>
+      <div className="relative bg-blue-500 dark:store-hero-pattern py-16 mb-10 text-white text-center shadow-lg">
+        <h1 className="text-5xl font-extrabold mb-2 mt-4 tracking-tight drop-shadow-lg text-white">Discover & Buy Our Sounds</h1>
+        <p className="text-lg max-w-2xl mx-auto text-blue-100 dark:text-blue-200 opacity-90">Browse, listen, and purchase high-quality sounds for your next project. Filter by category, preview tracks, and build your custom cart!</p>
       </div>
 
       {/* Category Filter */}
