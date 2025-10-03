@@ -127,10 +127,10 @@ export default function StorePage() {
 
       {/* Music Grid */}
       <motion.div
+        key={`${category}-${page}`}
         variants={containerVariants}
         initial="hidden"
-        whileInView="visible"
-        viewport={{ once: true, amount: 0.2 }}
+        animate="visible"
         className="max-w-5xl mx-auto px-4 grid gap-8 sm:grid-cols-2 lg:grid-cols-3"
       >
         {paged.map((sample, i) => (
