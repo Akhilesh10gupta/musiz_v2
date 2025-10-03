@@ -17,7 +17,7 @@ export async function POST(req: NextRequest) {
       from: process.env.RESEND_FROM_EMAIL!,
       to: [process.env.RESEND_TO_EMAIL!],
       subject: `New message from ${name} on your website`,
-      react: ContactEmail({ name, email, message }),
+      react: <ContactEmail name={name} email={email} message={message} />,
     });
 
     if (error) {
