@@ -70,7 +70,7 @@ const Footer = () => {
               <a href="#" aria-label="Facebook" className="text-gray-400 hover:text-white transition-colors"><FaFacebookF /></a>
               <a href="#" aria-label="Twitter" className="text-gray-400 hover:text-white transition-colors"><FaTwitter /></a>
               <a href="https://www.instagram.com/sirmusiz_studios/" aria-label="Instagram" className="text-gray-400 hover:text-white transition-colors"><FaInstagram /></a>
-              <a href="#" aria-label="YouTube" className="text-gray-400 hover:text-white transition-colors"><FaYoutube /></a>
+              <a href="https://www.youtube.com/@sirmusizproduction" aria-label="YouTube" className="text-gray-400 hover:text-white transition-colors"><FaYoutube /></a>
               <a href="#" aria-label="LinkedIn" className="text-gray-400 hover:text-white transition-colors"><FaLinkedinIn /></a>
             </div>
           </motion.div>
