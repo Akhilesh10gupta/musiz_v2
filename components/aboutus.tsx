@@ -146,22 +146,7 @@ export default function About() {
           </Slider>
         </div>
 
-        {/* call to action */}
-        <div className="flex justify-center mt-20">
-          <motion.a
-            href="/contact"
-            className="inline-block bg-gradient-to-r from-teal-400 via-cyan-400 to-blue-400 text-white px-10 py-3 rounded-full font-semibold shadow-md hover:shadow-lg focus:outline-none focus:ring-4 focus:ring-cyan-200 transition-transform duration-300"
-            variants={fadeUp}
-            custom={4}
-            initial="hidden"
-            whileInView="visible"
-            animate={{ y: [0, -6, 0] }}
-            transition={{ duration: 3, repeat: Infinity, ease: 'easeInOut' }}
-            whileHover={{ scale: 1.08 }}
-          >
-            Get in Touch
-          </motion.a>
-        </div>
+
       </div>
 
       {/* hide arrows on small screens */}
