@@ -1,5 +1,6 @@
 'use client'
 import React, { useState } from 'react';
+import { motion, Variants } from 'framer-motion';
 
 // Mock music sample data with categories
 const musicSamples = [
@@ -59,36 +60,90 @@ export default function StorePage() {
     pageNumbers = [page - 1, page];
   }
 
+  const containerVariants: Variants = {
+    hidden: {},
+    visible: { transition: { staggerChildren: 0.15 } },
+  }
+
+  const cardVariantsLeft: Variants = {
+    hidden: { opacity: 0, x: -60 },
+    visible: {
+      opacity: 1,
+      x: 0,
+      transition: { type: 'tween', ease: 'easeInOut', duration: 0.5 },
+    },
+  };
+
+  const cardVariantsRight: Variants = {
+    hidden: { opacity: 0, x: 60 },
+    visible: {
+      opacity: 1,
+      x: 0,
+      transition: { type: 'tween', ease: 'easeInOut', duration: 0.5 },
+    },
+  };
+
   return (
     <div className="min-h-screen bg-gray-100 dark:bg-gray-900 px-0 pb-20">
       {/* Hero Banner */}
-      <div className="relative bg-blue-500 dark:store-hero-pattern py-16 mb-10 text-white text-center shadow-lg">
-        <h1 className="text-5xl font-extrabold mb-2 mt-4 tracking-tight drop-shadow-lg text-white">Discover & Buy Our Sounds</h1>
-        <p className="text-lg max-w-2xl mx-auto text-blue-100 dark:text-blue-200 opacity-90">Browse, listen, and purchase high-quality sounds for your next project. Filter by category, preview tracks, and build your custom cart!</p>
-      </div>
+      <motion.div
+        initial={{ opacity: 0, y: -20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5 }}
+        className="relative bg-gray-900 dark:bg-gray-800 py-16 mb-10 text-white text-center shadow-lg"
+      >
+        <motion.h1
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.2, duration: 0.5 }}
+          className="text-5xl font-extrabold mb-2 mt-4 tracking-tight drop-shadow-lg text-white"
+        >
+          Discover & Buy Our Sounds
+        </motion.h1>
+        <motion.p
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.4, duration: 0.5 }}
+          className="text-lg max-w-2xl mx-auto text-gray-400 dark:text-gray-400 opacity-90"
+        >
+          Browse, listen, and purchase high-quality sounds for your next project. Filter by category, preview tracks, and build your custom cart!
+        </motion.p>
+      </motion.div>
 
       {/* Category Filter */}
       <div className="max-w-5xl mx-auto px-4 flex flex-wrap gap-3 justify-center mb-8">
         {categories.map((cat) => (
-          <button
+          <motion.button
             key={cat}
-            className={`px-5 py-2 rounded-full font-semibold border transition-all text-sm shadow-sm ${category === cat ? 'bg-blue-600 text-white border-blue-700 dark:bg-blue-500 dark:text-white dark:border-blue-600' : 'bg-white text-blue-700 border-blue-200 hover:bg-blue-100 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-600 dark:hover:bg-gray-600'}`}
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+            className={`px-5 py-2 rounded-full font-semibold border transition-all text-sm shadow-sm ${category === cat ? 'bg-amber-500 text-white border-amber-600 dark:bg-amber-500 dark:text-white dark:border-amber-600' : 'bg-white text-amber-700 border-amber-200 hover:bg-amber-100 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-600 dark:hover:bg-gray-600'}`}
             onClick={() => handleCategory(cat)}
           >
             {cat}
-          </button>
+          </motion.button>
         ))}
       </div>
 
       {/* Music Grid */}
-      <div className="max-w-5xl mx-auto px-4 grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
-        {paged.map((sample) => (
-          <div key={sample.id} className="rounded-2xl bg-white/90 dark:bg-gray-800 shadow-lg p-6 flex flex-col gap-3 group hover:scale-[1.03] hover:shadow-2xl transition-all border border-blue-100 dark:border-gray-700">
+      <motion.div
+        variants={containerVariants}
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, amount: 0.2 }}
+        className="max-w-5xl mx-auto px-4 grid gap-8 sm:grid-cols-2 lg:grid-cols-3"
+      >
+        {paged.map((sample, i) => (
+          <motion.div
+            key={sample.id}
+            variants={i % 2 === 0 ? cardVariantsLeft : cardVariantsRight}
+            className="rounded-2xl bg-white/90 dark:bg-gray-800 shadow-lg p-6 flex flex-col gap-3 group hover:scale-[1.03] hover:shadow-2xl transition-all border border-amber-100 dark:border-gray-700"
+          >
             <div className="flex items-center gap-3 mb-2">
-              <span className="inline-block px-3 py-1 rounded-full text-xs font-bold bg-blue-100 text-blue-700 dark:bg-blue-900/50 dark:text-blue-300">{sample.category}</span>
+              <span className="inline-block px-3 py-1 rounded-full text-xs font-bold bg-amber-100 text-amber-700 dark:bg-amber-900/50 dark:text-amber-300">{sample.category}</span>
               <span className="inline-block px-3 py-1 rounded-full text-xs font-bold bg-purple-100 text-purple-700 dark:bg-purple-900/50 dark:text-purple-300">{sample.genre}</span>
             </div>
-            <div className="font-bold text-lg mb-1 text-blue-900 dark:text-gray-100 group-hover:text-blue-700 dark:group-hover:text-blue-400 transition">{sample.title}</div>
+            <div className="font-bold text-lg mb-1 text-amber-900 dark:text-gray-100 group-hover:text-amber-700 dark:group-hover:text-amber-400 transition">{sample.title}</div>
             <div className="text-xs text-gray-500 dark:text-gray-400 mb-2">{sample.bpm} BPM | {sample.key}</div>
             <audio
               src={sample.url}
@@ -101,72 +156,82 @@ export default function StorePage() {
                   e.currentTarget.currentTime = 0;
                 }
               }}
-              className="w-full rounded-lg border border-blue-100 dark:border-gray-700"
+              className="w-full rounded-lg border border-amber-100 dark:border-gray-700"
             />
             {cart.includes(sample.id) ? (
-              <button
+              <motion.button
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
                 className="mt-2 px-4 py-2 rounded bg-red-500 text-white font-semibold hover:bg-red-600 transition"
                 onClick={() => handleRemoveFromCart(sample.id)}
               >
                 Remove from Cart
-              </button>
+              </motion.button>
             ) : (
-              <button
-                className="mt-2 px-4 py-2 rounded bg-blue-500 text-white font-semibold hover:bg-blue-600 transition"
+              <motion.button
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                className="mt-2 px-4 py-2 rounded bg-amber-500 text-white font-semibold hover:bg-amber-600 transition"
                 onClick={() => handleAddToCart(sample.id)}
               >
                 Add to Cart
-              </button>
+              </motion.button>
             )}
-          </div>
+          </motion.div>
         ))}
-      </div>
+      </motion.div>
 
       {/* Pagination */}
       <div className="max-w-5xl mx-auto px-4 flex justify-center gap-2 mt-10 items-center">
-        <button
-          className={`px-4 py-2 rounded-lg font-semibold border text-sm transition-all ${page === 1 ? 'bg-gray-200 text-gray-400 border-gray-200 cursor-not-allowed dark:bg-gray-700 dark:text-gray-500 dark:border-gray-700' : 'bg-white text-blue-700 border-blue-200 hover:bg-blue-100 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-600 dark:hover:bg-gray-600'}`}
+        <motion.button
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.95 }}
+          className={`px-4 py-2 rounded-lg font-semibold border text-sm transition-all ${page === 1 ? 'bg-gray-200 text-gray-400 border-gray-200 cursor-not-allowed dark:bg-gray-700 dark:text-gray-500 dark:border-gray-700' : 'bg-white text-amber-700 border-amber-200 hover:bg-amber-100 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-600 dark:hover:bg-gray-600'}`}
           onClick={() => page > 1 && setPage(page - 1)}
           disabled={page === 1}
         >
           Previous
-        </button>
+        </motion.button>
         {pageNumbers.map((p) => (
-          <button
+          <motion.button
             key={p}
-            className={`px-4 py-2 rounded-lg font-semibold border text-sm transition-all ${page === p ? 'bg-blue-600 text-white border-blue-700 dark:bg-blue-500 dark:text-white dark:border-blue-600' : 'bg-white text-blue-700 border-blue-200 hover:bg-blue-100 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-600 dark:hover:bg-gray-600'}`}
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+            className={`px-4 py-2 rounded-lg font-semibold border text-sm transition-all ${page === p ? 'bg-amber-500 text-white border-amber-600 dark:bg-amber-500 dark:text-white dark:border-amber-600' : 'bg-white text-amber-700 border-amber-200 hover:bg-amber-100 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-600 dark:hover:bg-gray-600'}`}
             onClick={() => setPage(p)}
             disabled={page === p}
           >
             {p}
-          </button>
+          </motion.button>
         ))}
-        <button
-          className={`px-4 py-2 rounded-lg font-semibold border text-sm transition-all ${page === totalPages ? 'bg-gray-200 text-gray-400 border-gray-200 cursor-not-allowed dark:bg-gray-700 dark:text-gray-500 dark:border-gray-700' : 'bg-white text-blue-700 border-blue-200 hover:bg-blue-100 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-600 dark:hover:bg-gray-600'}`}
+        <motion.button
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.95 }}
+          className={`px-4 py-2 rounded-lg font-semibold border text-sm transition-all ${page === totalPages ? 'bg-gray-200 text-gray-400 border-gray-200 cursor-not-allowed dark:bg-gray-700 dark:text-gray-500 dark:border-gray-700' : 'bg-white text-amber-700 border-amber-200 hover:bg-amber-100 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-600 dark:hover:bg-gray-600'}`}
           onClick={() => page < totalPages && setPage(page + 1)}
           disabled={page === totalPages}
         >
           Next
-        </button>
+        </motion.button>
       </div>
 
       {/* Cart Section */}
       <div className="max-w-3xl mx-auto mt-16 bg-white/95 dark:bg-gray-800 rounded-2xl shadow-xl p-8">
-        <h2 className="text-2xl font-bold mb-4 text-blue-900 dark:text-gray-100 flex items-center gap-2">
+        <h2 className="text-2xl font-bold mb-4 text-amber-900 dark:text-gray-100 flex items-center gap-2">
           <span>Your Cart</span>
-          <span className="inline-block bg-blue-100 text-blue-700 dark:bg-blue-900/50 dark:text-blue-300 text-xs font-semibold px-2 py-1 rounded-full">{cart.length}</span>
+          <span className="inline-block bg-amber-100 text-amber-700 dark:bg-amber-900/50 dark:text-amber-300 text-xs font-semibold px-2 py-1 rounded-full">{cart.length}</span>
         </h2>
         {cart.length === 0 ? (
           <div className="text-gray-500 dark:text-gray-400 text-center py-8">No items in cart.</div>
         ) : (
-          <ul className="divide-y divide-blue-100 dark:divide-gray-700">
+          <ul className="divide-y divide-amber-100 dark:divide-gray-700">
             {cart.map((id) => {
               const sample = musicSamples.find((s) => s.id === id);
               if (!sample) return null;
               return (
                 <li key={id} className="flex justify-between items-center py-4">
                   <div>
-                    <div className="font-semibold text-blue-800 dark:text-gray-100">{sample.title}</div>
+                    <div className="font-semibold text-amber-800 dark:text-gray-100">{sample.title}</div>
                     <div className="text-xs text-gray-500 dark:text-gray-400">{sample.category} | {sample.genre}</div>
                   </div>
                   <div className="flex gap-2">
@@ -193,4 +258,4 @@ export default function StorePage() {
       </div>
     </div>
   );
-} 
+}
