@@ -208,13 +208,15 @@ export default function ProjectsPage() {
   }
 
   const nextImage = () => {
-    setActiveImageIndex(prev => (prev + 1) % posterImages.length)
-    setActive(posterImages[(activeImageIndex + 1) % posterImages.length])
+    const nextIndex = (activeImageIndex + 1) % posterImages.length;
+    setActiveImageIndex(nextIndex);
+    setActive(posterImages[nextIndex]);
   }
 
   const prevImage = () => {
-    setActiveImageIndex(prev => (prev - 1 + posterImages.length) % posterImages.length)
-    setActive(posterImages[(activeImageIndex - 1 + posterImages.length) % posterImages.length])
+    const prevIndex = (activeImageIndex - 1 + posterImages.length) % posterImages.length;
+    setActiveImageIndex(prevIndex);
+    setActive(posterImages[prevIndex]);
   }
 
   return (
@@ -406,7 +408,7 @@ export default function ProjectsPage() {
                 active.instagramUrl || active.spotifyUrl
                   ? 'max-w-sm aspect-[9/16]'
                   : active.imageUrl
-                  ? 'max-w-4xl'
+                  ? 'max-w-4xl h-[80vh]'
                   : 'max-w-4xl aspect-video'
               }`}
             >
