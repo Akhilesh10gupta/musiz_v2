@@ -110,7 +110,7 @@ export default function Hero() {
         >
           We turn raw ideas into immersive audio-visual experiences.
         </p>
-        <div className={`mt-8 sm:mt-12 animate-fade-in-up animation-delay-600`}>
+        <div className={`mt-8 sm:mt-12 animate-spring-in animation-delay-600`}>
           <AnimatedButton href="/contact">
             Get a Quote
           </AnimatedButton>
