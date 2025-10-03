@@ -1,5 +1,5 @@
 'use client'
-import React, { useState, useRef } from 'react'
+import React, { useState, useRef, useEffect } from 'react'
 import { motion, AnimatePresence, useInView, useMotionValue, useTransform, Variants } from 'framer-motion'
 import Link from 'next/link'
 import { BsFillPlayFill } from 'react-icons/bs'
@@ -43,8 +43,20 @@ export default function Projects() {
   const [isHovered, setIsHovered] = useState(false);
   const mouseX = useMotionValue(0);
   const mouseY = useMotionValue(0);
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const mediaQuery = window.matchMedia('(max-width: 768px)');
+    const handleResize = () => setIsMobile(mediaQuery.matches);
+    handleResize(); // Set initial state
+    mediaQuery.addEventListener('change', handleResize);
+    return () => {
+      mediaQuery.removeEventListener('change', handleResize);
+    }
+  }, []);
 
   const handleMouseMove = (e: React.MouseEvent) => {
+    if (isMobile) return;
     mouseX.set(e.clientX);
     mouseY.set(e.clientY);
   };
@@ -58,7 +70,7 @@ export default function Projects() {
       ref={ref}
       className="relative min-h-screen py-20 px-6 flex flex-col items-center text-white scroll-mt-20 bg-gray-900"
     >
-      {isHovered && (
+      {!isMobile && isHovered && (
         <motion.div
           className="fixed top-0 left-0 w-24 h-24 rounded-full bg-white pointer-events-none"
           style={{
@@ -72,8 +84,8 @@ export default function Projects() {
       {/* heading */}
       <div 
         className="mb-12 text-center" 
-        onMouseEnter={() => setIsHovered(true)}
-        onMouseLeave={() => setIsHovered(false)}
+        onMouseEnter={() => !isMobile && setIsHovered(true)}
+        onMouseLeave={() => !isMobile && setIsHovered(false)}
         onMouseMove={handleMouseMove}
       >
         <motion.h2
@@ -82,29 +94,31 @@ export default function Projects() {
           initial="initial"
           animate={isInView ? "inView" : "initial"}
         >
-          <motion.span className="inline-block">
-            {title.split(" ")[0].split("").map((letter, index) => (
-              <motion.span
-                key={index}
-                variants={colorWaveLetter}
-                className="inline-block"
-              >
-                {letter}
+            <>
+              <motion.span className="inline-block">
+                {title.split(" ")[0].split("").map((letter, index) => (
+                  <motion.span
+                    key={index}
+                    variants={colorWaveLetter}
+                    className="inline-block"
+                  >
+                    {letter}
+                  </motion.span>
+                ))}
               </motion.span>
-            ))}
-          </motion.span>
-          <span className="inline-block">&nbsp;</span>
-          <motion.span className="inline-block">
-            {title.split(" ")[1].split("").map((letter, index) => (
-              <motion.span
-                key={index}
-                variants={colorWaveLetter}
-                className="inline-block"
-              >
-                {letter}
+              <span className="inline-block">&nbsp;</span>
+              <motion.span className="inline-block">
+                {title.split(" ")[1].split("").map((letter, index) => (
+                  <motion.span
+                    key={index}
+                    variants={colorWaveLetter}
+                    className="inline-block"
+                  >
+                    {letter}
+                  </motion.span>
+                ))}
               </motion.span>
-            ))}
-          </motion.span>
+            </>
         </motion.h2>
         <p className="text-gray-400 max-w-xl mx-auto text-balance">
           A showcase of studio sessions, official releases, and creative demos.
@@ -114,7 +128,7 @@ export default function Projects() {
       {/* video carousel */}
       <div className="w-full max-w-6xl mx-auto overflow-hidden">
         <div className="flex space-x-8 py-4 scrolling-wrapper">
-          {duplicatedVideos.map((v, idx) => (
+          {(isMobile ? videos : duplicatedVideos).map((v, idx) => (
             <motion.div
               key={`${v.videoId}-${idx}`}
               initial={{ opacity: 0, scale: 0.8 }}
