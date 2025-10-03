@@ -310,11 +310,12 @@ export default function ProjectsPage() {
                     loading="lazy"
                   />
                 ) : v.imageUrl ? (
-                  <img
+                  <Image
                     src={v.imageUrl}
                     alt={v.title}
-                    className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
-                    loading="lazy"
+                    fill
+                    sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                    className="object-cover transition-transform duration-300 group-hover:scale-105"
                   />
                 ) : null}
               </div>
