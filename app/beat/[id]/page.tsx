@@ -1,7 +1,7 @@
 'use client'
 import React, { useState } from 'react';
 import { useParams } from 'next/navigation';
-import { musicSamples, MusicSample } from '@/lib/data/beats';
+import { musicSamples } from '@/lib/data/beats';
 import Image from 'next/image';
 import { FaPlay, FaHeart, FaShare, FaDownload, FaArrowLeft } from 'react-icons/fa';
 import LicenseModal from '@/components/LicenseModal';

@@ -2,7 +2,7 @@
 import React, { useState } from 'react';
 import { motion, Variants } from 'framer-motion';
 import Link from 'next/link';
-import { MusicSample, musicSamples } from '@/lib/data/beats';
+import { musicSamples } from '@/lib/data/beats';
 
 const categories = ['All', 'Guitar', 'Piano', 'Saxophone', 'Strings', 'Vocals', 'Synth', 'Drums', 'Bass', 'Percussion', 'Beats'];
 

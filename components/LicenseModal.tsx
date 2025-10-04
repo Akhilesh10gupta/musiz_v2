@@ -1,7 +1,7 @@
 'use client'
 import React from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { MusicSample } from '@/app/store/page';
+import { MusicSample } from '@/lib/data/beats';
 import Image from 'next/image';
 
 interface LicenseModalProps {
