@@ -1,9 +1,9 @@
 'use client';
-import React, { useState, useRef } from 'react';
+import React, { useState } from 'react';
 import { useParams } from 'next/navigation';
 import { musicSamples } from '@/lib/data/beats';
 import Image from 'next/image';
-import { FaPlay, FaHeart, FaShare, FaDownload, FaArrowLeft } from 'react-icons/fa';
+import { FaPlay, FaArrowLeft } from 'react-icons/fa';
 import LicenseModal from '@/components/LicenseModal';
 import Link from 'next/link';
 import Container from '@/components/Container';
@@ -49,8 +49,6 @@ export default function BeatPage() {
             <div className="lg:w-1/3">
               <MusicPlayer
                 beat={currentBeat}
-                playlist={playlist}
-                currentTrackIndex={currentTrackIndex}
                 onNext={handleNext}
                 onPrev={handlePrev}
                 setShowLicenseModal={setShowLicenseModal}

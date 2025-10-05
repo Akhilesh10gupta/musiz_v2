@@ -9,14 +9,12 @@ import {
 
 interface MusicPlayerProps {
   beat: MusicSample;
-  playlist: MusicSample[];
-  currentTrackIndex: number;
   onNext: () => void;
   onPrev: () => void;
   setShowLicenseModal: (show: boolean) => void;
 }
 
-const MusicPlayer: React.FC<MusicPlayerProps> = ({ beat, playlist, currentTrackIndex, onNext, onPrev, setShowLicenseModal }) => {
+const MusicPlayer: React.FC<MusicPlayerProps> = ({ beat, onNext, onPrev, setShowLicenseModal }) => {
   const [isPlaying, setIsPlaying] = useState(false);
   const [volume, setVolume] = useState(0.8);
   const [duration, setDuration] = useState(0);
