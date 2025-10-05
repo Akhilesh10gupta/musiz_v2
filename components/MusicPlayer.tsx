@@ -3,7 +3,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import { MusicSample } from '@/lib/data/beats';
 import Image from 'next/image';
 import {
-  FaPlay, FaPause, FaForward, FaBackward, FaHeart, FaDownload,
+  FaPlay, FaPause, FaForward, FaBackward,
   FaVolumeUp, FaVolumeMute, FaRandom, FaRedo, FaShare
 } from 'react-icons/fa';
 
@@ -86,6 +86,20 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({ beat, onNext, onPrev, setShow
     return `${minutes}:${seconds}`;
   };
 
+  const handleShare = async () => {
+    if (navigator.share) {
+      try {
+        await navigator.share({
+          title: beat.title,
+          text: `Check out this beat: ${beat.title}`,
+          url: window.location.href,
+        });
+      } catch (error) {
+        console.error('Error sharing:', error);
+      }
+    }
+  };
+
   return (
     <div className="bg-gray-800 text-white rounded-2xl shadow-2xl w-full p-6 border border-purple-500/20">
       <audio
@@ -143,8 +157,9 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({ beat, onNext, onPrev, setShow
                   className="w-full h-1 bg-gray-700 rounded-lg appearance-none cursor-pointer accent-purple-500"
               />
           </div>
-          <button className="text-gray-400 hover:text-red-500"><FaHeart /></button>
-          <button className="text-gray-400 hover:text-green-500"><FaDownload /></button>
+          <button onClick={handleShare} className="text-gray-400 hover:text-white">
+            <FaShare />
+          </button>
       </div>
 
       <div className="mt-8 bg-gray-800 p-4 rounded-lg">
@@ -156,18 +171,6 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({ beat, onNext, onPrev, setShow
           <span>{beat.bpm} BPM</span>
         </div>
         <div className="flex flex-wrap items-center gap-3 mt-3">
-          <button className="bg-gray-700 hover:bg-gray-600 text-white font-bold py-2 px-3 rounded-full flex items-center gap-2 text-sm">
-            <FaDownload />
-            <span>Download</span>
-          </button>
-          <button className="bg-gray-700 hover:bg-gray-600 text-white font-bold py-2 px-3 rounded-full flex items-center gap-2 text-sm">
-            <FaHeart />
-            <span>Like</span>
-          </button>
-          <button className="bg-gray-700 hover:bg-gray-600 text-white font-bold py-2 px-3 rounded-full flex items-center gap-2 text-sm">
-            <FaShare />
-            <span>Share</span>
-          </button>
         </div>
         <button 
           className="bg-blue-600 text-white font-bold py-2 px-6 rounded-full text-base w-full mt-4 hover:bg-blue-700 transition-all shadow-[0_0_20px_rgba(59,130,246,0.5)]"
