@@ -168,26 +168,27 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({ beat, onNext, onPrev, setShow
         <div className="flex flex-wrap items-center gap-3 mt-3">
         </div>
         <div className="flex gap-2 mt-4">
-          <button 
-            className="bg-purple-600 text-white font-bold py-2 px-6 rounded-full text-base w-full hover:bg-purple-700 transition-all shadow-[0_0_20px_rgba(147,51,234,0.5)]"
-            onClick={() => setShowLicenseModal(true)}
-          >
-            Buy Now - ₹{beat.price}
-          </button>
           {isBeatInCart ? (
             <button 
-              className="bg-red-500 text-white font-bold py-2 px-6 rounded-full text-base w-full hover:bg-red-600 transition-all shadow-[0_0_20px_rgba(239,68,68,0.5)]"
+              className="bg-red-500 text-white font-bold py-2 px-6 rounded-full text-base w-full hover:bg-red-600 transition-all shadow-[0_0_15px_rgba(239,68,68,0.4)]"
               onClick={() => removeFromCart(beat.id)}
             >
               Remove from Cart
             </button>
           ) : (
             <button 
-className="bg-amber-500 text-white font-bold py-2 px-6 rounded-full text-base w-full hover:bg-amber-600 transition-all shadow-[0_0_20px_rgba(245,158,11,0.5)]"
+              className="bg-amber-500 text-white font-bold py-2 px-6 rounded-full text-base w-full hover:bg-amber-600 transition-all shadow-[0_0_15px_rgba(245,158,11,0.4)]"
+              onClick={() => addToCart(beat)}
             >
               Add to Cart
             </button>
           )}
+          <button 
+            className="bg-purple-600 text-white font-bold py-2 px-6 rounded-full text-base w-full hover:bg-purple-700 transition-all shadow-[0_0_15px_rgba(147,51,234,0.4)]"
+            onClick={() => setShowLicenseModal(true)}
+          >
+            Buy Now - ₹{beat.price}
+          </button>
         </div>
       </div>
     </div>
