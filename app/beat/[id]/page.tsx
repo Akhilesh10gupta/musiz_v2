@@ -30,7 +30,7 @@ export default function BeatPage() {
     setCurrentTrackIndex((prevIndex) => (prevIndex - 1 + playlist.length) % playlist.length);
   };
 
-  const handleCloseModal = (purchaseSuccess: boolean) => {
+  const handleCloseModal = () => {
     setShowLicenseModal(false);
   };
 
