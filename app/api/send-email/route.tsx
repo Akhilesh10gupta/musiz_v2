@@ -1,4 +1,3 @@
-
 import { type NextRequest, NextResponse } from 'next/server';
 import { Resend } from 'resend';
 import { ContactEmail } from '@/components/emails/ContactEmail';

@@ -19,7 +19,7 @@ export async function POST(req: NextRequest) {
 
     const message = `New purchase:\n\n${beatsDetails}\n\nTotal Price: ₹${totalPrice}`;
 
-    const { data, error } = await resend.emails.send({
+    const { error } = await resend.emails.send({
       from: process.env.RESEND_FROM_EMAIL!,
       to: [process.env.RESEND_TO_EMAIL!],
       subject: 'New Beat Purchase',
@@ -27,11 +27,13 @@ export async function POST(req: NextRequest) {
     });
 
     if (error) {
+      console.error('Error sending email:', error);
       return NextResponse.json({ error: error.message }, { status: 500 });
     }
 
     return NextResponse.json({ message: 'Email sent successfully' });
   } catch (error) {
+    console.error('An unexpected error occurred:', error);
     return NextResponse.json({ error: 'Something went wrong' }, { status: 500 });
   }
 }
