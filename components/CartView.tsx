@@ -28,7 +28,7 @@ const CartView: React.FC<CartViewProps> = ({ onClose }) => {
 
   return (
     <>
-      <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex justify-end">
+      <div className="fixed inset-0 bg-black/30 backdrop-blur-sm z-50 flex justify-end">
         <motion.div 
           className="w-full max-w-md h-full bg-gray-900 text-white flex flex-col"
           initial={{ x: "100%" }}
