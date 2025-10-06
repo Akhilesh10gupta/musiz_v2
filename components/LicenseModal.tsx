@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { MusicSample } from '@/lib/data/beats';
 import Image from 'next/image';
-import { CheckCircle } from 'lucide-react';
+import { CheckCircle, X } from 'lucide-react';
 
 interface LicenseModalProps {
   beats: MusicSample[];
@@ -59,16 +59,24 @@ const LicenseModal: React.FC<LicenseModalProps> = ({ beats, onClose }) => {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
-          className="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50 p-4"
+          className="fixed inset-0 bg-black/30 backdrop-blur-sm flex items-center justify-center z-50 p-4"
           onClick={handleClose}
         >
           <motion.div
             initial={{ scale: 0.9, y: 50 }}
             animate={{ scale: 1, y: 0 }}
             exit={{ scale: 0.9, y: 50 }}
-            className="bg-gray-900 rounded-lg shadow-xl w-full max-w-2xl text-white flex flex-col overflow-hidden"
+            className="bg-gray-900/80 rounded-lg shadow-xl w-full max-w-2xl text-white flex flex-col overflow-hidden relative"
             onClick={(e) => e.stopPropagation()}
           >
+            <motion.button
+              onClick={handleClose}
+              className="absolute top-4 right-4 text-white hover:text-gray-300"
+              whileHover={{ scale: 1.2 }}
+              transition={{ duration: 0.2 }}
+            >
+              <X size={24} />
+            </motion.button>
             <div className="p-8">
               {purchaseSuccess ? (
                 <div className="text-center flex flex-col items-center">
@@ -122,7 +130,7 @@ const LicenseModal: React.FC<LicenseModalProps> = ({ beats, onClose }) => {
                     </div>
                   )}
 
-                  <div className="border border-blue-500 rounded-lg p-6 mb-6 bg-gray-800">
+                  <div className="border border-blue-500 rounded-lg p-6 mb-6 bg-gray-800/80">
                     <h4 className="text-lg font-bold mb-2">WAV License</h4>
                     <div className="grid grid-cols-2 gap-4 text-sm">
                       <div>
@@ -144,16 +152,16 @@ const LicenseModal: React.FC<LicenseModalProps> = ({ beats, onClose }) => {
                     </div>
                   </div>
 
-                  <form onSubmit={handleBuyNow}>
-                    <div className="mb-4">
+                  <form onSubmit={handleBuyNow} className="flex flex-col items-center">
+                    <div className="mb-4 w-full">
                       <label htmlFor="name" className="block text-sm font-medium mb-1">Name</label>
-                      <input type="text" id="name" name="name" required className="w-full bg-gray-800 border border-gray-700 rounded-lg px-3 py-2 focus:outline-none focus:border-blue-500" />
+                      <input type="text" id="name" name="name" required className="w-full bg-gray-800/80 border border-gray-700 rounded-lg px-3 py-2 focus:outline-none focus:border-blue-500" />
                     </div>
-                    <div className="mb-4">
+                    <div className="mb-4 w-full">
                       <label htmlFor="email" className="block text-sm font-medium mb-1">Email</label>
-                      <input type="email" id="email" name="email" required className="w-full bg-gray-800 border border-gray-700 rounded-lg px-3 py-2 focus:outline-none focus:border-blue-500" />
+                      <input type="email" id="email" name="email" required className="w-full bg-gray-800/80 border border-gray-700 rounded-lg px-3 py-2 focus:outline-none focus:border-blue-500" />
                     </div>
-                    <button type="submit" className="w-full bg-blue-600 text-white font-bold py-3 rounded-lg hover:bg-blue-700 transition-all shadow-[0_0_20px_rgba(59,130,246,0.5)]">
+                    <button type="submit" className="w-1/2 bg-blue-600 text-white font-bold py-3 rounded-lg hover:bg-blue-700 transition-all shadow-[0_0_20px_rgba(59,130,246,0.5)]">
                       Buy Now - ₹{totalPrice}
                     </button>
                   </form>
