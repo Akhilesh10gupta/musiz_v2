@@ -109,53 +109,59 @@ export default function StorePage() {
         animate="visible"
         className="max-w-5xl mx-auto px-4 grid gap-6 sm:grid-cols-2 lg:grid-cols-3"
       >
-        {paged.map((sample, i) => (
-          <Link key={sample.id} href={`/beat/${sample.id}`}>
-            <motion.div
-              variants={i % 2 === 0 ? cardVariantsLeft : cardVariantsRight}
-              className="rounded-2xl bg-white/90 dark:bg-gray-800 shadow-lg p-4 flex flex-col gap-2 group hover:scale-[1.03] hover:shadow-2xl transition-all border border-amber-100 dark:border-gray-700"
-            >
-              <div className="flex items-center gap-3 mb-2">
-                <span className="inline-block px-3 py-1 rounded-full text-xs font-bold bg-amber-100 text-amber-700 dark:bg-amber-900/50 dark:text-amber-300">{sample.category}</span>
-                <span className="inline-block px-3 py-1 rounded-full text-xs font-bold bg-purple-100 text-purple-700 dark:bg-purple-900/50 dark:text-purple-300">{sample.genre}</span>
-              </div>
-              <div className="font-bold text-lg mb-1 text-amber-900 dark:text-gray-100 group-hover:text-amber-700 dark:group-hover:text-amber-400 transition">{sample.title}</div>
-              <div className="text-xs text-gray-500 dark:text-gray-400 mb-2">{sample.bpm} BPM | {sample.key}</div>
-              <audio
-                src={sample.url}
-                controls
-                controlsList="nodownload"
-                preload="none"
-                onTimeUpdate={(e) => {
-                  if (e.currentTarget.currentTime >= 30) {
-                    e.currentTarget.pause();
-                    e.currentTarget.currentTime = 0;
-                  }
-                }}
-                className="w-full rounded-lg border border-amber-100 dark:border-gray-700"
-              />
-              {cartItems.find(item => item.id === sample.id) ? (
-                <motion.button
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                  className="mt-2 px-4 py-2 rounded bg-red-500 text-white font-semibold hover:bg-red-600 transition"
-                  onClick={(e) => { e.preventDefault(); removeFromCart(sample.id); }}
-                >
-                  Remove from Cart
-                </motion.button>
-              ) : (
-                <motion.button
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                  className="mt-2 px-4 py-2 rounded bg-amber-500 text-white font-semibold hover:bg-amber-600 transition"
-                  onClick={(e) => { e.preventDefault(); addToCart(sample); }}
-                >
-                  Add to Cart
-                </motion.button>
-              )}
-            </motion.div>
-          </Link>
-        ))}
+        {paged.length === 0 ? (
+          <div className="text-center text-gray-500 dark:text-gray-400 col-span-full">
+            No music available in this category right now.
+          </div>
+        ) : (
+          paged.map((sample, i) => (
+            <Link key={sample.id} href={`/beat/${sample.id}`}>
+              <motion.div
+                variants={i % 2 === 0 ? cardVariantsLeft : cardVariantsRight}
+                className="rounded-2xl bg-white/90 dark:bg-gray-800 shadow-lg p-4 flex flex-col gap-2 group hover:scale-[1.03] hover:shadow-2xl transition-all border border-amber-100 dark:border-gray-700"
+              >
+                <div className="flex items-center gap-3 mb-2">
+                  <span className="inline-block px-3 py-1 rounded-full text-xs font-bold bg-amber-100 text-amber-700 dark:bg-amber-900/50 dark:text-amber-300">{sample.category}</span>
+                  <span className="inline-block px-3 py-1 rounded-full text-xs font-bold bg-purple-100 text-purple-700 dark:bg-purple-900/50 dark:text-purple-300">{sample.genre}</span>
+                </div>
+                <div className="font-bold text-lg mb-1 text-amber-900 dark:text-gray-100 group-hover:text-amber-700 dark:group-hover:text-amber-400 transition">{sample.title}</div>
+                <div className="text-xs text-gray-500 dark:text-gray-400 mb-2">{sample.bpm} BPM | {sample.key}</div>
+                <audio
+                  src={sample.url}
+                  controls
+                  controlsList="nodownload"
+                  preload="none"
+                  onTimeUpdate={(e) => {
+                    if (e.currentTarget.currentTime >= 30) {
+                      e.currentTarget.pause();
+                      e.currentTarget.currentTime = 0;
+                    }
+                  }}
+                  className="w-full rounded-lg border border-amber-100 dark:border-gray-700"
+                />
+                {cartItems.find(item => item.id === sample.id) ? (
+                  <motion.button
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                    className="mt-2 px-4 py-2 rounded bg-red-500 text-white font-semibold hover:bg-red-600 transition"
+                    onClick={(e) => { e.preventDefault(); removeFromCart(sample.id); }}
+                  >
+                    Remove from Cart
+                  </motion.button>
+                ) : (
+                  <motion.button
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                    className="mt-2 px-4 py-2 rounded bg-amber-500 text-white font-semibold hover:bg-amber-600 transition"
+                    onClick={(e) => { e.preventDefault(); addToCart(sample); }}
+                  >
+                    Add to Cart
+                  </motion.button>
+                )}
+              </motion.div>
+            </Link>
+          ))
+        )}
       </motion.div>
 
       {/* Pagination */}
