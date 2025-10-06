@@ -5,6 +5,7 @@ import { useCart } from '@/lib/context/CartContext';
 import Image from 'next/image';
 import { X } from 'lucide-react';
 import LicenseModal from './LicenseModal';
+import { useRouter } from 'next/navigation';
 
 interface CartViewProps {
   onClose: () => void;
@@ -13,10 +14,15 @@ interface CartViewProps {
 const CartView: React.FC<CartViewProps> = ({ onClose }) => {
   const { cartItems, removeFromCart, getCartTotal, clearCart } = useCart();
   const [showLicenseModal, setShowLicenseModal] = useState(false);
+  const router = useRouter();
 
-  const handleCloseModal = () => {
+  const handleCloseModal = (purchaseSuccess: boolean) => {
     setShowLicenseModal(false);
-    clearCart();
+    if (purchaseSuccess) {
+      clearCart();
+      router.push('/store');
+      onClose();
+    }
   };
 
   return (

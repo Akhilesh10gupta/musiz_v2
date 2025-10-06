@@ -7,7 +7,7 @@ import { CheckCircle } from 'lucide-react';
 
 interface LicenseModalProps {
   beats: MusicSample[];
-  onClose: () => void;
+  onClose: (purchaseSuccess: boolean) => void;
 }
 
 const LicenseModal: React.FC<LicenseModalProps> = ({ beats, onClose }) => {
@@ -46,6 +46,10 @@ const LicenseModal: React.FC<LicenseModalProps> = ({ beats, onClose }) => {
     }
   };
 
+  const handleClose = () => {
+    onClose(purchaseSuccess);
+  };
+
   const totalPrice = beats.reduce((total, beat) => total + beat.price, 0);
 
   return (
@@ -56,7 +60,7 @@ const LicenseModal: React.FC<LicenseModalProps> = ({ beats, onClose }) => {
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
           className="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50 p-4"
-          onClick={onClose}
+          onClick={handleClose}
         >
           <motion.div
             initial={{ scale: 0.9, y: 50 }}
@@ -79,7 +83,7 @@ const LicenseModal: React.FC<LicenseModalProps> = ({ beats, onClose }) => {
                   <p className="text-lg mb-6 text-gray-300">Thank you for your purchase. We will contact you shortly with the details.</p>
                   <button 
                     className="w-full bg-blue-600 text-white font-bold py-3 rounded-lg hover:bg-blue-700 transition-all shadow-[0_0_20px_rgba(59,130,246,0.5)]"
-                    onClick={onClose}
+                    onClick={handleClose}
                   >
                     Close
                   </button>

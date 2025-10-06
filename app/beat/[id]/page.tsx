@@ -30,6 +30,10 @@ export default function BeatPage() {
     setCurrentTrackIndex((prevIndex) => (prevIndex - 1 + playlist.length) % playlist.length);
   };
 
+  const handleCloseModal = (purchaseSuccess: boolean) => {
+    setShowLicenseModal(false);
+  };
+
   const currentBeat = playlist[currentTrackIndex];
 
   return (
@@ -43,7 +47,7 @@ export default function BeatPage() {
         </Container>
       </div>
       <div className="bg-gray-900 text-white pt-28 pb-12 px-4">
-        {showLicenseModal && <LicenseModal beats={[currentBeat]} onClose={() => setShowLicenseModal(false)} />}
+        {showLicenseModal && <LicenseModal beats={[currentBeat]} onClose={handleCloseModal} />}
         <Container>
           <div className="flex flex-col lg:flex-row gap-8">
             <div className="lg:w-1/3">

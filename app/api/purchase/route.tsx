@@ -22,7 +22,7 @@ export async function POST(req: NextRequest) {
     const { error } = await resend.emails.send({
       from: process.env.RESEND_FROM_EMAIL!,
       to: [process.env.RESEND_TO_EMAIL!],
-      subject: 'New Beat Purchase',
+      subject: `New Beat Purchase - ${new Date().toISOString()}`,
       react: <ContactEmail name={name} email={email} message={message} />,
     });
 
