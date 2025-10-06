@@ -20,35 +20,24 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({ beat, onNext, onPrev, setShow
   const [volume, setVolume] = useState(0.8);
   const [duration, setDuration] = useState(0);
   const [currentTime, setCurrentTime] = useState(0);
-  const [canPlay, setCanPlay] = useState(false);
   const audioRef = useRef<HTMLAudioElement>(null);
   const { addToCart, cartItems, removeFromCart } = useCart();
 
   const togglePlay = () => {
-    setIsPlaying(!isPlaying);
+    if (audioRef.current) {
+      if (isPlaying) {
+        audioRef.current.pause();
+      } else {
+        audioRef.current.play().catch(e => console.error(e));
+      }
+    }
   };
 
   useEffect(() => {
     if (audioRef.current) {
       audioRef.current.src = beat.url;
-      audioRef.current.load();
-      setCanPlay(false);
     }
   }, [beat]);
-
-  useEffect(() => {
-    if (audioRef.current && canPlay) {
-      if (isPlaying) {
-        audioRef.current.play().catch(e => console.error(e));
-      } else {
-        audioRef.current.pause();
-      }
-    }
-  }, [isPlaying, canPlay]);
-
-  const handleCanPlay = () => {
-    setCanPlay(true);
-  };
 
   const handleVolumeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (audioRef.current) {
@@ -111,7 +100,9 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({ beat, onNext, onPrev, setShow
         onEnded={onNext}
         onTimeUpdate={handleTimeUpdate}
         onLoadedMetadata={handleLoadedMetadata}
-        onCanPlay={handleCanPlay}
+        onPlay={() => setIsPlaying(true)}
+        onPause={() => setIsPlaying(false)}
+        preload="none"
       />
 
       <div className="text-center mb-6">
