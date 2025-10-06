@@ -157,7 +157,7 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({ beat, onNext, onPrev, setShow
           </button>
       </div>
 
-      <div className="mt-8 bg-gray-800 p-4 rounded-lg">
+      <div className="mt-8 bg-gray-900/70 p-4 rounded-lg backdrop-blur-sm">
         <div className="flex flex-wrap items-center text-gray-400 text-sm mt-2">
           <span>{new Date(beat.publishedDate).toLocaleDateString()}</span>
           <span className="mx-2">|</span>
@@ -169,22 +169,21 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({ beat, onNext, onPrev, setShow
         </div>
         <div className="flex gap-2 mt-4">
           <button 
-            className="bg-blue-600 text-white font-bold py-2 px-6 rounded-full text-base w-full hover:bg-blue-700 transition-all shadow-[0_0_20px_rgba(59,130,246,0.5)]"
+            className="bg-purple-600 text-white font-bold py-2 px-6 rounded-full text-base w-full hover:bg-purple-700 transition-all shadow-[0_0_20px_rgba(147,51,234,0.5)]"
             onClick={() => setShowLicenseModal(true)}
           >
             Buy Now - ₹{beat.price}
           </button>
           {isBeatInCart ? (
             <button 
-              className="bg-red-600 text-white font-bold py-2 px-6 rounded-full text-base w-full hover:bg-red-700 transition-all shadow-[0_0_20px_rgba(239,68,68,0.5)]"
+              className="bg-red-500 text-white font-bold py-2 px-6 rounded-full text-base w-full hover:bg-red-600 transition-all shadow-[0_0_20px_rgba(239,68,68,0.5)]"
               onClick={() => removeFromCart(beat.id)}
             >
               Remove from Cart
             </button>
           ) : (
             <button 
-              className="bg-green-600 text-white font-bold py-2 px-6 rounded-full text-base w-full hover:bg-green-700 transition-all shadow-[0_0_20px_rgba(34,197,94,0.5)]"
-              onClick={() => addToCart(beat)}
+className="bg-amber-500 text-white font-bold py-2 px-6 rounded-full text-base w-full hover:bg-amber-600 transition-all shadow-[0_0_20px_rgba(245,158,11,0.5)]"
             >
               Add to Cart
             </button>
