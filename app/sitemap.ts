@@ -23,7 +23,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 0.5,
     },
     {
-      url: `${baseUrl}/ekart`,
+      url: `${baseUrl}/store`,
       lastModified: new Date(),
       changeFrequency: 'monthly',
       priority: 0.7,
