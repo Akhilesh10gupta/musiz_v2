@@ -110,8 +110,8 @@ const Header: React.FC<HeaderProps> = ({ menuOpen, setMenuOpen, onCartClick, car
             Contact&nbsp;Us
           </Link>
 
-          <button onClick={onCartClick} className="relative focus:outline-none">
-            <ShoppingCart className="h-6 w-6" />
+          <button onClick={onCartClick} className="relative focus:outline-none group cursor-pointer">
+            <ShoppingCart className="h-6 w-6 transition-colors duration-300 group-hover:text-amber-500" />
             {cartItemCount > 0 && (
               <span className="absolute -top-2 -right-2 flex h-5 w-5 items-center justify-center rounded-full bg-red-500 text-xs font-bold">
                 {cartItemCount}
