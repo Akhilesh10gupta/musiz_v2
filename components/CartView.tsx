@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import { useCart } from '@/lib/context/CartContext';
 import Image from 'next/image';
 import { X } from 'lucide-react';
+import { motion } from 'framer-motion';
 import LicenseModal from './LicenseModal';
 import { useRouter } from 'next/navigation';
 
@@ -28,7 +29,13 @@ const CartView: React.FC<CartViewProps> = ({ onClose }) => {
   return (
     <>
       <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex justify-end">
-        <div className="w-full max-w-md h-full bg-gray-900 text-white flex flex-col">
+        <motion.div 
+          className="w-full max-w-md h-full bg-gray-900 text-white flex flex-col"
+          initial={{ x: "100%" }}
+          animate={{ x: 0 }}
+          exit={{ x: "100%" }}
+          transition={{ duration: 0.3, ease: "easeInOut" }}
+        >
           <div className="p-4 border-b border-gray-700 flex justify-between items-center">
             <h2 className="text-xl font-bold">Shopping Cart</h2>
             <button onClick={onClose} className="text-gray-400 hover:text-white">
@@ -72,7 +79,7 @@ const CartView: React.FC<CartViewProps> = ({ onClose }) => {
               Checkout
             </button>
           </div>
-        </div>
+        </motion.div>
       </div>
       {showLicenseModal && <LicenseModal beats={cartItems} onClose={handleCloseModal} />}
     </>

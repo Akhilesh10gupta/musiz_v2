@@ -7,20 +7,19 @@ import { Menu, X, ShoppingCart } from 'lucide-react'
 import Container from './Container'
 import { motion, AnimatePresence, type Variants } from 'framer-motion'
 import { usePathname } from 'next/navigation'
-import { useCart } from '@/lib/context/CartContext'
-import CartView from './CartView'
 
-const Header: React.FC<{ menuOpen: boolean; setMenuOpen: React.Dispatch<React.SetStateAction<boolean>> }> = ({ menuOpen, setMenuOpen }) => {
-  /* ------------ state ------------ */
+interface HeaderProps {
+  menuOpen: boolean;
+  setMenuOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  onCartClick: () => void;
+  cartItemCount: number;
+}
 
+const Header: React.FC<HeaderProps> = ({ menuOpen, setMenuOpen, onCartClick, cartItemCount }) => {
   const [scrolled, setScrolled] = useState(false)
-  const [cartOpen, setCartOpen] = useState(false)
-  const { cartItems } = useCart()
   const pathname = usePathname()
 
-  /* ------------ helpers ------------ */
   const toggleMenu = () => setMenuOpen(prev => !prev)
-  const toggleCart = () => setCartOpen(prev => !prev)
 
   useEffect(() => {
     const handleScroll = () => {
@@ -50,14 +49,12 @@ const Header: React.FC<{ menuOpen: boolean; setMenuOpen: React.Dispatch<React.Se
     visible: { opacity: 1, y: 0 },
   }
 
-  /* ------------ render ------------ */
   return (
     <header
       className={`fixed top-0 left-0 z-50 h-[72px] w-full text-white transition-all duration-300 ${
         scrolled ? 'bg-gray-900/50 shadow-lg backdrop-blur-sm' : 'bg-transparent'
       }`}>
       <Container className="flex items-center justify-between px-4 py-4">
-        {/* Logo */}
         <Link href="/" className="flex items-center space-x-2">
           <Image
             src="/logo.png"
@@ -70,7 +67,6 @@ const Header: React.FC<{ menuOpen: boolean; setMenuOpen: React.Dispatch<React.Se
           <h1 className="sr-only">SiR Musiz Studios - Creative Audio & Visual Production</h1>
         </Link>
 
-        {/* Desktop Navigation */}
         <nav className="relative hidden items-center space-x-6 text-sm uppercase font-light tracking-wide sm:flex">
           <Link href="/" className={`group font-semibold ${
               pathname === '/' ? 'text-amber-500' : ''
@@ -83,7 +79,8 @@ const Header: React.FC<{ menuOpen: boolean; setMenuOpen: React.Dispatch<React.Se
             }`}>
             Projects
             <span className="block max-w-0 group-hover:max-w-full transition-all duration-500 h-0.5 bg-amber-500"></span>
-          </Link>          <Link href="/artist" className={`group font-semibold ${
+          </Link>
+          <Link href="/artist" className={`group font-semibold ${
               pathname === '/artist' ? 'text-amber-500' : ''
             }`}>
             Artist
@@ -106,7 +103,6 @@ const Header: React.FC<{ menuOpen: boolean; setMenuOpen: React.Dispatch<React.Se
         </nav>
 
         <div className="flex items-center gap-4">
-          {/* Desktop contact button */}
           <Link
             href="/contact"
             className="hidden border border-white px-4 py-2 font-semibold transition duration-200 hover:bg-white hover:text-black sm:inline-block"
@@ -114,17 +110,15 @@ const Header: React.FC<{ menuOpen: boolean; setMenuOpen: React.Dispatch<React.Se
             Contact&nbsp;Us
           </Link>
 
-          {/* Cart Icon */}
-          <button onClick={toggleCart} className="relative focus:outline-none">
+          <button onClick={onCartClick} className="relative focus:outline-none">
             <ShoppingCart className="h-6 w-6" />
-            {cartItems.length > 0 && (
+            {cartItemCount > 0 && (
               <span className="absolute -top-2 -right-2 flex h-5 w-5 items-center justify-center rounded-full bg-red-500 text-xs font-bold">
-                {cartItems.length}
+                {cartItemCount}
               </span>
             )}
           </button>
 
-          {/* Mobile menu toggle */}
           <button
             onClick={toggleMenu}
             className="focus:outline-none sm:hidden"
@@ -135,7 +129,6 @@ const Header: React.FC<{ menuOpen: boolean; setMenuOpen: React.Dispatch<React.Se
         </div>
       </Container>
 
-      {/* Mobile Menu */}
       <AnimatePresence>
         {menuOpen && (
           <>
@@ -232,10 +225,6 @@ const Header: React.FC<{ menuOpen: boolean; setMenuOpen: React.Dispatch<React.Se
             </motion.div>
           </>
         )}
-      </AnimatePresence>
-
-      <AnimatePresence>
-        {cartOpen && <CartView onClose={toggleCart} />}
       </AnimatePresence>
     </header>
   )
