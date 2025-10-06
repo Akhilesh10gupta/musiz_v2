@@ -43,7 +43,7 @@ export default function BeatPage() {
         </Container>
       </div>
       <div className="bg-gray-900 text-white pt-28 pb-12 px-4">
-        {showLicenseModal && <LicenseModal beat={currentBeat} onClose={() => setShowLicenseModal(false)} />}
+        {showLicenseModal && <LicenseModal beats={[currentBeat]} onClose={() => setShowLicenseModal(false)} />}
         <Container>
           <div className="flex flex-col lg:flex-row gap-8">
             <div className="lg:w-1/3">

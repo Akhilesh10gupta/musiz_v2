@@ -3,13 +3,14 @@ import React, { useState } from 'react';
 import { motion, Variants } from 'framer-motion';
 import Link from 'next/link';
 import { musicSamples } from '@/lib/data/beats';
+import { useCart } from '@/lib/context/CartContext';
 
 const categories = ['All', 'Guitar', 'Piano', 'Saxophone', 'Strings', 'Vocals', 'Synth', 'Drums', 'Bass', 'Percussion', 'Beats'];
 
 const PAGE_SIZE = 6;
 
 export default function StorePage() {
-  const [cart, setCart] = useState<number[]>([]);
+  const { cartItems, addToCart, removeFromCart } = useCart();
   const [category, setCategory] = useState('All');
   const [page, setPage] = useState(1);
 
@@ -18,12 +19,6 @@ export default function StorePage() {
   const totalPages = Math.ceil(filtered.length / PAGE_SIZE);
   const paged = filtered.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE);
 
-  const handleAddToCart = (id: number) => {
-    setCart((prev) => (prev.includes(id) ? prev : [...prev, id]));
-  };
-  const handleRemoveFromCart = (id: number) => {
-    setCart((prev) => prev.filter((item) => item !== id));
-  };
   const handleCategory = (cat: string) => {
     setCategory(cat);
     setPage(1);
@@ -139,12 +134,12 @@ export default function StorePage() {
                 }}
                 className="w-full rounded-lg border border-amber-100 dark:border-gray-700"
               />
-              {cart.includes(sample.id) ? (
+              {cartItems.find(item => item.id === sample.id) ? (
                 <motion.button
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
                   className="mt-2 px-4 py-2 rounded bg-red-500 text-white font-semibold hover:bg-red-600 transition"
-                  onClick={(e) => { e.preventDefault(); handleRemoveFromCart(sample.id); }}
+                  onClick={(e) => { e.preventDefault(); removeFromCart(sample.id); }}
                 >
                   Remove from Cart
                 </motion.button>
@@ -153,7 +148,7 @@ export default function StorePage() {
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
                   className="mt-2 px-4 py-2 rounded bg-amber-500 text-white font-semibold hover:bg-amber-600 transition"
-                  onClick={(e) => { e.preventDefault(); handleAddToCart(sample.id); }}
+                  onClick={(e) => { e.preventDefault(); addToCart(sample); }}
                 >
                   Add to Cart
                 </motion.button>
@@ -195,48 +190,6 @@ export default function StorePage() {
         >
           Next
         </motion.button>
-      </div>
-
-      {/* Cart Section */}
-      <div className="max-w-3xl mx-auto mt-12 bg-white/95 dark:bg-gray-800 rounded-2xl shadow-xl p-6">
-        <h2 className="text-2xl font-bold mb-4 text-amber-900 dark:text-gray-100 flex items-center gap-2">
-          <span>Your Cart</span>
-          <span className="inline-block bg-amber-100 text-amber-700 dark:bg-amber-900/50 dark:text-amber-300 text-xs font-semibold px-2 py-1 rounded-full">{cart.length}</span>
-        </h2>
-        {cart.length === 0 ? (
-          <div className="text-gray-500 dark:text-gray-400 text-center py-6">No items in cart.</div>
-        ) : (
-          <ul className="divide-y divide-amber-100 dark:divide-gray-700">
-            {cart.map((id) => {
-              const sample = musicSamples.find((s) => s.id === id);
-              if (!sample) return null;
-              return (
-                <li key={id} className="flex justify-between items-center py-3">
-                  <div>
-                    <div className="font-semibold text-amber-800 dark:text-gray-100">{sample.title}</div>
-                    <div className="text-xs text-gray-500 dark:text-gray-400">{sample.category} | {sample.genre}</div>
-                  </div>
-                  <div className="flex gap-2">
-                    <button
-                      className="text-red-500 hover:underline text-sm px-3 py-1 rounded"
-                      onClick={() => handleRemoveFromCart(id)}
-                    >
-                      Remove
-                    </button>
-                    <a
-                      href={sample.gumroadUrl}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="px-4 py-1 bg-green-600 text-white rounded hover:bg-green-700 transition text-sm"
-                    >
-                      Buy
-                    </a>
-                  </div>
-                </li>
-              );
-            })}
-          </ul>
-        )}
       </div>
     </div>
   );

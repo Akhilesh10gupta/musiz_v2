@@ -6,6 +6,7 @@ import {
   FaPlay, FaPause, FaForward, FaBackward,
   FaVolumeUp, FaVolumeMute, FaRandom, FaRedo, FaShare
 } from 'react-icons/fa';
+import { useCart } from '@/lib/context/CartContext';
 
 interface MusicPlayerProps {
   beat: MusicSample;
@@ -21,6 +22,7 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({ beat, onNext, onPrev, setShow
   const [currentTime, setCurrentTime] = useState(0);
   const [canPlay, setCanPlay] = useState(false);
   const audioRef = useRef<HTMLAudioElement>(null);
+  const { addToCart, cartItems, removeFromCart } = useCart();
 
   const togglePlay = () => {
     setIsPlaying(!isPlaying);
@@ -100,6 +102,8 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({ beat, onNext, onPrev, setShow
     }
   };
 
+  const isBeatInCart = cartItems.find(item => item.id === beat.id);
+
   return (
     <div className="bg-gray-800 text-white rounded-2xl shadow-2xl w-full p-6 border border-purple-500/20">
       <audio
@@ -172,12 +176,29 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({ beat, onNext, onPrev, setShow
         </div>
         <div className="flex flex-wrap items-center gap-3 mt-3">
         </div>
-        <button 
-          className="bg-blue-600 text-white font-bold py-2 px-6 rounded-full text-base w-full mt-4 hover:bg-blue-700 transition-all shadow-[0_0_20px_rgba(59,130,246,0.5)]"
-          onClick={() => setShowLicenseModal(true)}
-        >
-          Buy Now - ₹{beat.price}
-        </button>
+        <div className="flex gap-2 mt-4">
+          <button 
+            className="bg-blue-600 text-white font-bold py-2 px-6 rounded-full text-base w-full hover:bg-blue-700 transition-all shadow-[0_0_20px_rgba(59,130,246,0.5)]"
+            onClick={() => setShowLicenseModal(true)}
+          >
+            Buy Now - ₹{beat.price}
+          </button>
+          {isBeatInCart ? (
+            <button 
+              className="bg-red-600 text-white font-bold py-2 px-6 rounded-full text-base w-full hover:bg-red-700 transition-all shadow-[0_0_20px_rgba(239,68,68,0.5)]"
+              onClick={() => removeFromCart(beat.id)}
+            >
+              Remove from Cart
+            </button>
+          ) : (
+            <button 
+              className="bg-green-600 text-white font-bold py-2 px-6 rounded-full text-base w-full hover:bg-green-700 transition-all shadow-[0_0_20px_rgba(34,197,94,0.5)]"
+              onClick={() => addToCart(beat)}
+            >
+              Add to Cart
+            </button>
+          )}
+        </div>
       </div>
     </div>
   );

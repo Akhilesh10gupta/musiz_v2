@@ -4,6 +4,7 @@ import "./globals.css";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import Script from "next/script";
+import { CartProvider } from "@/lib/context/CartContext";
 import LayoutClient from "@/components/LayoutClient";
 
 const geistSans = Geist({
@@ -92,7 +93,9 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} ${poppins.variable} ${dancingScript.variable} antialiased`}
       >
-        <LayoutClient>{children}</LayoutClient>
+        <CartProvider>
+          <LayoutClient>{children}</LayoutClient>
+        </CartProvider>
       </body>
     </html>
   );

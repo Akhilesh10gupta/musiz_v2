@@ -3,19 +3,25 @@
 import React, { useState, useEffect } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
-import { Menu, X } from 'lucide-react'
+import { Menu, X, ShoppingCart } from 'lucide-react'
 import Container from './Container'
 import { motion, AnimatePresence, type Variants } from 'framer-motion'
 import { usePathname } from 'next/navigation'
+import { useCart } from '@/lib/context/CartContext'
+import CartView from './CartView'
 
 const Header: React.FC<{ menuOpen: boolean; setMenuOpen: React.Dispatch<React.SetStateAction<boolean>> }> = ({ menuOpen, setMenuOpen }) => {
   /* ------------ state ------------ */
 
   const [scrolled, setScrolled] = useState(false)
+  const [cartOpen, setCartOpen] = useState(false)
+  const { cartItems } = useCart()
   const pathname = usePathname()
 
   /* ------------ helpers ------------ */
   const toggleMenu = () => setMenuOpen(prev => !prev)
+  const toggleCart = () => setCartOpen(prev => !prev)
+
   useEffect(() => {
     const handleScroll = () => {
       setScrolled(window.scrollY > 50)
@@ -99,22 +105,34 @@ const Header: React.FC<{ menuOpen: boolean; setMenuOpen: React.Dispatch<React.Se
           </Link>
         </nav>
 
-        {/* Desktop contact button */}
-        <Link
-          href="/contact"
-          className="hidden border border-white px-4 py-2 font-semibold transition duration-200 hover:bg-white hover:text-black sm:inline-block"
-        >
-          Contact&nbsp;Us
-        </Link>
+        <div className="flex items-center gap-4">
+          {/* Desktop contact button */}
+          <Link
+            href="/contact"
+            className="hidden border border-white px-4 py-2 font-semibold transition duration-200 hover:bg-white hover:text-black sm:inline-block"
+          >
+            Contact&nbsp;Us
+          </Link>
 
-        {/* Mobile menu toggle */}
-        <button
-          onClick={toggleMenu}
-          className="focus:outline-none sm:hidden"
-          aria-label="Toggle menu"
-        >
-          {menuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
-        </button>
+          {/* Cart Icon */}
+          <button onClick={toggleCart} className="relative focus:outline-none">
+            <ShoppingCart className="h-6 w-6" />
+            {cartItems.length > 0 && (
+              <span className="absolute -top-2 -right-2 flex h-5 w-5 items-center justify-center rounded-full bg-red-500 text-xs font-bold">
+                {cartItems.length}
+              </span>
+            )}
+          </button>
+
+          {/* Mobile menu toggle */}
+          <button
+            onClick={toggleMenu}
+            className="focus:outline-none sm:hidden"
+            aria-label="Toggle menu"
+          >
+            {menuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
+          </button>
+        </div>
       </Container>
 
       {/* Mobile Menu */}
@@ -214,6 +232,10 @@ const Header: React.FC<{ menuOpen: boolean; setMenuOpen: React.Dispatch<React.Se
             </motion.div>
           </>
         )}
+      </AnimatePresence>
+
+      <AnimatePresence>
+        {cartOpen && <CartView onClose={toggleCart} />}
       </AnimatePresence>
     </header>
   )
