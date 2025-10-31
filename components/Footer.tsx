@@ -61,7 +61,7 @@ const Footer = () => {
           <motion.div variants={itemVariants} className="space-y-3">
             <Link href="/" className="flex items-center space-x-2">
               <Image src="/logo_2.png" alt="SiR Musiz Studios" width={40} height={40} />
-              <span className="text-white text-xl font-bold">SiR Musiz</span>
+              <span className="text-white text-xl font-bold">SiR Musiz Studios</span>
             </Link>
             <p className="text-sm">
               A creative haven where sonic innovation meets soulful storytelling.
