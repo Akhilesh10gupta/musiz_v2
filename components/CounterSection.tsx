@@ -12,8 +12,8 @@ const CounterSection = () => {
   return (
     <div ref={ref} className="relative bg-gray-900 py-12 text-white overflow-hidden">
       <div className="container mx-auto px-4 relative z-10">
-        <h2 className="text-3xl sm:text-4xl xl:text-5xl font-extrabold text-center mb-8">
-          <span className="text-white">Our </span>
+        <h2 className="text-4xl sm:text-5xl font-extrabold text-center mb-14 tracking-wider">
+          <span className="">Our </span>
           <span className="text-yellow-400">Achievements</span>
         </h2>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
