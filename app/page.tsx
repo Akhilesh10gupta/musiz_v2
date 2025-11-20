@@ -9,6 +9,7 @@ import dynamic from 'next/dynamic'
 const Hero = dynamic(() => import('@/components/Hero'))
 const Projects = dynamic(() => import('@/components/Projects'))
 const CounterSection = dynamic(() => import('@/components/CounterSection'))
+const LogoSlider = dynamic(() => import('@/components/LogoSlider'))
 const Services = dynamic(() => import('@/components/Services'))
 const About = dynamic(() => import('@/components/aboutus'))
 
@@ -69,6 +70,7 @@ const Home = () => {
             <Hero />
             <Projects />
             <CounterSection />
+            <LogoSlider />
             <Services />
             <About />
           </Container>
