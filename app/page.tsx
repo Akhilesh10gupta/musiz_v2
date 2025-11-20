@@ -8,6 +8,7 @@ import dynamic from 'next/dynamic'
 
 const Hero = dynamic(() => import('@/components/Hero'))
 const Projects = dynamic(() => import('@/components/Projects'))
+const CounterSection = dynamic(() => import('@/components/CounterSection'))
 const Services = dynamic(() => import('@/components/Services'))
 const About = dynamic(() => import('@/components/aboutus'))
 
@@ -67,6 +68,7 @@ const Home = () => {
           <Container className="bg-gradient-to-br from-teal-100 via-cyan-50 to-blue-50 max-w-full">
             <Hero />
             <Projects />
+            <CounterSection />
             <Services />
             <About />
           </Container>
